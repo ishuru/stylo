@@ -1,4 +1,5 @@
 import type {NextConfig} from 'next';
+import path from 'path';
 
 const securityHeaders = [
   {
@@ -43,14 +44,4 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: securityHeaders,
-      },
-    ];
-  },
-};
-
 export default nextConfig;
