@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation';
 import { useInvitation } from '@/context/invitation-context';
 import type { SavedDesign, InvitationTemplate } from '@/lib/types';
 
-interface HomePageProps {
+interface HomePageComponentProps {
     onStartDesigning: (description: string) => void;
     onUseTemplate: (template: InvitationTemplate) => void;
     onLoadDraft: (draftId: string) => void;
     onDeleteDraft: (draftId: string) => void;
-    onRenameDraft: (draftId: string) => void;
+    onRenameDraft: (draftId: string, newName: string) => void;
     templates: InvitationTemplate[];
     drafts: SavedDesign[];
     isLoading: boolean;
@@ -24,8 +24,8 @@ const TabButton: React.FC<{ active: boolean; onClick: () => void; children: Reac
         onClick={onClick}
         className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
             active
-                ? 'bg-primary text-primary-foreground shadow'
-                : 'text-primary hover:bg-primary/10'
+                ? 'bg-maroon text-white shadow'
+                : 'text-maroon-dark hover:bg-maroon/10'
         }`}
     >
         {children}
@@ -39,7 +39,7 @@ const ErrorDisplay: React.FC<{ message: string }> = ({ message }) => (
 );
 
 
-const StartFromScratch: React.FC<Pick<HomePageProps, 'onStartDesigning' | 'isLoading' | 'error'>> = ({ onStartDesigning, isLoading, error }) => {
+const StartFromScratch: React.FC<Pick<HomePageComponentProps, 'onStartDesigning' | 'isLoading' | 'error'>> = ({ onStartDesigning, isLoading, error }) => {
     const [description, setDescription] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -59,14 +59,14 @@ const StartFromScratch: React.FC<Pick<HomePageProps, 'onStartDesigning' | 'isLoa
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="e.g., A traditional South Indian baby shower, a modern minimalist wedding, a fun 5th birthday party..."
                     rows={4}
-                    className="w-full p-3 border border-border rounded-md bg-background focus:ring-ring focus:border-ring shadow-sm text-base"
+                    className="w-full p-3 border border-gold/50 rounded-md bg-parchment focus:ring-gold focus:border-gold shadow-sm text-base"
                     aria-label="Event Description"
                     disabled={isLoading}
                 />
                  <button 
                     type="submit" 
                     disabled={isLoading || !description.trim()} 
-                    className="w-full mt-6 py-3 px-4 bg-primary text-primary-foreground font-bold rounded-lg shadow-md hover:bg-primary/90 transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
+                    className="w-full mt-6 py-3 px-4 bg-maroon text-white font-bold rounded-lg shadow-md hover:bg-maroon-light transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
                 >
                     {isLoading ? (
                         <>
@@ -91,22 +91,22 @@ const StartFromScratch: React.FC<Pick<HomePageProps, 'onStartDesigning' | 'isLoa
     )
 };
 
-const TemplateGallery: React.FC<Pick<HomePageProps, 'templates' | 'onUseTemplate'>> = ({ templates, onUseTemplate }) => (
+const TemplateGallery: React.FC<Pick<HomePageComponentProps, 'templates' | 'onUseTemplate'>> = ({ templates, onUseTemplate }) => (
     <div>
         <h3 className="text-2xl font-headline text-secondary mb-2 text-center">Browse Templates</h3>
         <p className="text-muted-foreground mb-6 text-center">Get started quickly with one of our pre-designed templates.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {templates.map(template => (
-                <div key={template.name} className="border border-border/30 rounded-lg flex flex-col bg-background/30 overflow-hidden shadow-sm transition-shadow hover:shadow-lg">
-                    <div className="aspect-[3/4] bg-accent/10">
+                <div key={template.name} className="border border-gold/30 rounded-lg flex flex-col bg-parchment/30 overflow-hidden shadow-sm transition-shadow hover:shadow-lg">
+                    <div className="aspect-[3/4] bg-gold/10">
                         <img src={`https://placehold.co/${template.width}x${template.height}.png`} alt={template.name} className="w-full h-full object-cover"/>
                     </div>
                     <div className="p-4 flex flex-col flex-grow">
-                        <h4 className="text-lg font-bold text-primary">{template.name}</h4>
-                        <p className="text-sm text-secondary-foreground flex-grow mt-1 mb-4">{template.description || 'A beautiful invitation template.'}</p>
+                        <h4 className="text-lg font-bold text-maroon">{template.name}</h4>
+                        <p className="text-sm text-text-secondary flex-grow mt-1 mb-4">{template.description || 'A beautiful invitation template.'}</p>
                         <button 
                             onClick={() => onUseTemplate(template)}
-                            className="w-full mt-auto py-2 px-4 bg-accent text-accent-foreground font-bold rounded-lg shadow-sm hover:opacity-90 transition-opacity"
+                            className="w-full mt-auto py-2 px-4 bg-gold text-maroon-dark font-bold rounded-lg shadow-sm hover:opacity-90 transition-opacity"
                         >
                             Use Template
                         </button>
@@ -117,7 +117,7 @@ const TemplateGallery: React.FC<Pick<HomePageProps, 'templates' | 'onUseTemplate
     </div>
 );
 
-const DraftsManager: React.FC<Pick<HomePageProps, 'drafts' | 'onLoadDraft' | 'onDeleteDraft' | 'onRenameDraft'>> = ({ drafts, onLoadDraft, onDeleteDraft, onRenameDraft }) => {
+const DraftsManager: React.FC<Pick<HomePageComponentProps, 'drafts' | 'onLoadDraft' | 'onDeleteDraft' | 'onRenameDraft'>> = ({ drafts, onLoadDraft, onDeleteDraft, onRenameDraft }) => {
     
     return (
      <div>
@@ -126,20 +126,20 @@ const DraftsManager: React.FC<Pick<HomePageProps, 'drafts' | 'onLoadDraft' | 'on
         {drafts.length > 0 ? (
             <div className="space-y-4">
                 {drafts.map(draft => (
-                    <div key={draft.id} className="border border-border/30 rounded-lg p-3 flex items-center gap-4 bg-background/30">
-                        <div className="flex-shrink-0 w-16 h-16 bg-accent/20 rounded-md overflow-hidden aspect-[3/4]">
+                    <div key={draft.id} className="border border-gold/30 rounded-lg p-3 flex items-center gap-4 bg-parchment/30">
+                        <div className="flex-shrink-0 w-16 h-16 bg-gold/20 rounded-md overflow-hidden aspect-[3/4]">
                             {draft.thumbnail ? (
                                  <img src={`data:image/png;base64,${draft.thumbnail}`} alt={draft.name || 'Draft preview'} className="w-full h-full object-cover" />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center">
-                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-accent/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gold/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 </div>
                             )}
                         </div>
                         <div className="flex-grow">
-                            <p className="font-semibold text-primary">{draft.name || 'Untitled Draft'}</p>
+                            <p className="font-semibold text-maroon-dark">{draft.name || 'Untitled Draft'}</p>
                             <p className="text-xs text-muted-foreground">
                                 Saved: {new Date(draft.savedAt).toLocaleString()}
                             </p>
@@ -147,13 +147,18 @@ const DraftsManager: React.FC<Pick<HomePageProps, 'drafts' | 'onLoadDraft' | 'on
                         <div className="flex-shrink-0 flex items-center gap-2">
                              <button 
                                 onClick={() => onLoadDraft(draft.id)}
-                                className="py-2 px-3 bg-accent text-accent-foreground font-bold rounded-lg shadow-sm hover:opacity-90 transition-opacity text-sm"
+                                className="py-2 px-3 bg-gold text-maroon-dark font-bold rounded-lg shadow-sm hover:opacity-90 transition-opacity text-sm"
                             >
                                 Load
                             </button>
                              <button 
-                                onClick={() => onRenameDraft(draft.id)}
-                                className="p-2 text-muted-foreground hover:text-primary transition-colors"
+                                onClick={() => {
+                                    const newName = prompt('Enter new name:', draft.name);
+                                    if (newName) {
+                                      onRenameDraft(draft.id, newName);
+                                    }
+                                }}
+                                className="p-2 text-muted-foreground hover:text-maroon-dark transition-colors"
                                 title="Rename Draft"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -162,7 +167,11 @@ const DraftsManager: React.FC<Pick<HomePageProps, 'drafts' | 'onLoadDraft' | 'on
                                 </svg>
                             </button>
                              <button 
-                                onClick={() => onDeleteDraft(draft.id)}
+                                onClick={() => {
+                                  if (confirm('Are you sure you want to delete this draft?')) {
+                                    onDeleteDraft(draft.id);
+                                  }
+                                }}
                                 className="p-2 text-muted-foreground hover:text-red-600 transition-colors"
                                 title="Delete Draft"
                             >
@@ -175,12 +184,12 @@ const DraftsManager: React.FC<Pick<HomePageProps, 'drafts' | 'onLoadDraft' | 'on
                 ))}
             </div>
         ) : (
-            <div className="text-center py-10 px-4 border-2 border-dashed border-border/30 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-12 w-12 text-accent/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+            <div className="text-center py-10 px-4 border-2 border-dashed border-gold/30 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-12 w-12 text-gold/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8 7v8a2 2 0 002 2h4a2 2 0 002-2V7a2 2 0 00-2-2h-4a2 2 0 00-2 2z" />
                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7" />
                 </svg>
-                <p className="mt-4 font-semibold text-secondary-foreground">No saved drafts found.</p>
+                <p className="mt-4 font-semibold text-text-secondary">No saved drafts found.</p>
                 <p className="text-sm text-muted-foreground">Your saved invitations will appear here.</p>
             </div>
         )}
@@ -226,8 +235,16 @@ export default function HomePage() {
         loadDraft(draftId);
         router.push('/editor');
     };
+
+    const handleDeleteDraft = (draftId: string) => {
+        deleteDraft(draftId);
+    }
+
+    const handleRenameDraft = (draftId: string, newName: string) => {
+        renameDraft(draftId, newName);
+    }
     
-    const props: HomePageProps = {
+    const props: HomePageComponentProps = {
         templates,
         drafts,
         isLoading,
@@ -235,20 +252,20 @@ export default function HomePage() {
         onStartDesigning: handleStartDesigning,
         onUseTemplate: handleUseTemplate,
         onLoadDraft: handleLoadDraft,
-        onDeleteDraft: deleteDraft,
-        onRenameDraft: renameDraft
+        onDeleteDraft: handleDeleteDraft,
+        onRenameDraft: handleRenameDraft
     }
     
     return (
         <main className="container mx-auto p-4 sm:p-6 lg:p-8" style={{ minHeight: 'calc(100vh - 110px)' }}>
             <div className="max-w-4xl w-full mx-auto bg-card p-8 rounded-xl shadow-lg">
-                <div className="flex justify-center items-center gap-4 mb-8 border-b border-border/30 pb-4">
+                <div className="flex justify-center items-center gap-4 mb-8 border-b border-gold/30 pb-4">
                     <TabButton active={activeTab === 'start'} onClick={() => setActiveTab('start')}>
                         Start from Scratch
                     </TabButton>
                     <TabButton active={activeTab === 'templates'} onClick={() => setActiveTab('templates')}>
                         Templates
-                    </Button>
+                    </TabButton>
                     <TabButton active={activeTab === 'drafts'} onClick={() => setActiveTab('drafts')}>
                         My Drafts ({props.drafts.length})
                     </TabButton>

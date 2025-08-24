@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['PT Sans', 'sans-serif'],
+        body: ['Inter', 'sans-serif'],
         headline: ['Playfair Display', 'serif'],
         code: ['monospace'],
       },
@@ -66,16 +66,17 @@ export default {
           ring: 'hsl(var(--sidebar-ring))',
         },
         'maroon': {
-          DEFAULT: '#800000',
-          'light': '#a04040',
-          'dark': '#600000',
+            DEFAULT: '#6C1A24',
+            'dark': '#50131B',
+            'light': '#88212e',
         },
         'gold': {
-          DEFAULT: '#D4A27A',
+            DEFAULT: '#C8A45A',
         },
         'parchment': {
-          DEFAULT: '#F5F5DC',
-        }
+            DEFAULT: '#F5E9D6',
+        },
+        'text-secondary': '#374151',
       },
       borderRadius: {
         lg: 'var(--radius)',
