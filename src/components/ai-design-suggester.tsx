@@ -56,18 +56,21 @@ export function AiDesignSuggester() {
     }
   };
 
-  const applySuggestions = () => {
+  const applyColors = () => {
     if (!suggestions || !selectedTemplate) return;
-
-    resetCustomizations();
-
-    // Apply colors and fonts
     let colorIndex = 0;
     selectedTemplate.layers.forEach(layer => {
       if (layer.editable && layer.color && suggestions.suggestedColors.length > 0) {
         updateLayer(layer.id, { color: suggestions.suggestedColors[colorIndex % suggestions.suggestedColors.length] });
         colorIndex++;
       }
+    });
+    toast({ title: 'Colors Applied', description: 'The suggested color scheme has been applied.' });
+  };
+
+  const applyFonts = () => {
+    if (!suggestions || !selectedTemplate) return;
+     selectedTemplate.layers.forEach(layer => {
       if (layer.editable && layer.type === 'text' && suggestions.suggestedFonts.length > 0) {
         const fontFamily = layer.fontFamily === 'font-headline' ? 'font-headline' : 'font-body';
         const suggestedFont = fontFamily === 'font-headline' ? suggestions.suggestedFonts[0] : suggestions.suggestedFonts[1]
@@ -75,19 +78,21 @@ export function AiDesignSuggester() {
         if (suggestedFont) {
           if (suggestedFont.toLowerCase().includes('playfair')) {
              updateLayer(layer.id, { fontFamily: 'font-headline' });
-          } else if (suggestedFont.toLowerCase().includes('sans')) {
+          } else if (suggestedFont.toLowerCase().includes('lora') || suggestedFont.toLowerCase().includes('sans')) {
              updateLayer(layer.id, { fontFamily: 'font-body' });
           }
         }
       }
     });
+    toast({ title: 'Fonts Applied', description: 'The suggested font pairing has been applied.' });
+  };
 
-    // Apply text
+  const applyText = () => {
+    if (!suggestions) return;
     suggestions.suggestedText.forEach(suggestion => {
       updateLayer(suggestion.id, { value: suggestion.value });
     });
-
-    toast({ title: 'Success', description: 'AI suggestions have been applied.' });
+    toast({ title: 'Text Applied', description: 'The suggested text has been applied.' });
   };
   
   return (
@@ -132,30 +137,41 @@ export function AiDesignSuggester() {
         <Card>
           <CardHeader>
             <CardTitle>AI Suggestions</CardTitle>
+            <CardDescription>{suggestions.reasoning}</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <h4 className="font-semibold mb-2">Reasoning</h4>
-              <p className="text-sm text-muted-foreground">{suggestions.reasoning}</p>
-            </div>
-            <div className='space-y-4 pt-4 border-t'>
-              <h4 className="font-semibold">Suggested Design</h4>
+          <CardContent className="space-y-6">
+            <div className='space-y-3 pt-4 border-t'>
+              <div className="flex justify-between items-center">
+                <h4 className="font-semibold">Colors</h4>
+                <Button onClick={applyColors} size="sm" variant="outline">Apply</Button>
+              </div>
               <div className="flex gap-2">
                 {suggestions.suggestedColors.map((color, i) => (
                   <div key={i} className="w-8 h-8 rounded-full border" style={{ backgroundColor: color }} title={color}/>
                 ))}
               </div>
-              <p className="text-sm"><span className='font-medium'>Fonts:</span> {suggestions.suggestedFonts.join(' & ')}</p>
             </div>
-             <div className='space-y-2 pt-4 border-t'>
-              <h4 className="font-semibold">Suggested Text</h4>
+
+             <div className='space-y-3 pt-4 border-t'>
+              <div className="flex justify-between items-center">
+                <h4 className="font-semibold">Fonts</h4>
+                <Button onClick={applyFonts} size="sm" variant="outline">Apply</Button>
+              </div>
+              <p className="text-sm"><span className='font-medium'>Headline:</span> {suggestions.suggestedFonts[0]}</p>
+              <p className="text-sm"><span className='font-medium'>Body:</span> {suggestions.suggestedFonts[1]}</p>
+            </div>
+
+             <div className='space-y-3 pt-4 border-t'>
+              <div className="flex justify-between items-center">
+                <h4 className="font-semibold">Text</h4>
+                 <Button onClick={applyText} size="sm" variant="outline">Apply</Button>
+              </div>
                <div className="space-y-2 text-sm text-muted-foreground max-h-40 overflow-auto">
                 {suggestions.suggestedText.map(t => (
                   <p key={t.id}><strong>{selectedTemplate?.layers.find(l=>l.id === t.id)?.name}:</strong> {t.value}</p>
                 ))}
                </div>
             </div>
-            <Button onClick={applySuggestions} className="w-full" variant="outline">Apply Suggestions</Button>
           </CardContent>
         </Card>
       )}
