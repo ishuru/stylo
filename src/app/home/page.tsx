@@ -49,7 +49,7 @@ const StartFromScratch: React.FC<{
     return (
         <div className="text-center">
             <h3 className="text-2xl font-headline text-secondary-foreground mb-2">Describe Your Event</h3>
-            <p className="text-muted-foreground mb-6">Let's start by getting the details. What kind of invitation are you creating today?</p>
+            <p className="text-muted-foreground mb-6">{"Let's start by getting the details. What kind of invitation are you creating today?"}</p>
             <form onSubmit={handleSubmit}>
                 <Textarea
                     value={description}
@@ -244,7 +244,7 @@ const DraftsManager: React.FC<{
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete the draft "{deleteTarget?.name}".
+                        This action cannot be undone. This will permanently delete the draft &quot;{deleteTarget?.name}&quot;.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -266,8 +266,8 @@ export default function HomePage() {
     const { 
       templates, 
       drafts, 
-      startDesigning, 
-      useTemplate, 
+      startDesigning,
+      selectTemplate,
       loadDraft, 
       deleteDraft, 
       renameDraft 
@@ -291,8 +291,8 @@ export default function HomePage() {
         }
     };
 
-    const handleUseTemplate = (template: InvitationTemplate) => {
-        useTemplate(template);
+    const handleSelectTemplate = (template: InvitationTemplate) => {
+        selectTemplate(template);
         router.push('/editor');
     };
 
@@ -322,9 +322,9 @@ export default function HomePage() {
                         isLoading={isLoading}
                         error={error}
                     />}
-                    {activeTab === 'templates' && <TemplateGallery 
-                        templates={templates} 
-                        onUseTemplate={handleUseTemplate} 
+                    {activeTab === 'templates' && <TemplateGallery
+                        templates={templates}
+                        onUseTemplate={handleSelectTemplate}
                     />}
                     {activeTab === 'drafts' && <DraftsManager 
                         drafts={drafts}
