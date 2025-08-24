@@ -56,7 +56,7 @@ export function CustomizePanel() {
                     <div className="space-y-2">
                       <Label>Color</Label>
                       <ColorPicker
-                        color={currentLayer.color}
+                        color={currentLayer.color!}
                         onChange={(color) => updateLayer(layer.id, { color })}
                       />
                     </div>
@@ -85,4 +85,3 @@ export function CustomizePanel() {
     </div>
   );
 }
-

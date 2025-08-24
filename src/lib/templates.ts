@@ -1,3 +1,4 @@
+
 import type { InvitationTemplate } from './types';
 
 export const initialTemplates: InvitationTemplate[] = [
@@ -10,14 +11,14 @@ export const initialTemplates: InvitationTemplate[] = [
     height: 700,
     layers: [
       { id: 'bg', type: 'image', name: 'Background', value: 'https://placehold.co/500x700.png', x: 0, y: 0, width: 500, height: 700, editable: true, aiPrompt: 'A beautiful, elegant background for a classic wedding invitation, perhaps with subtle floral hints or watercolor textures.' },
-      { id: 'title', type: 'text', name: 'Title', value: 'Together with their families', x: 250, y: 80, width: 400, height: 50, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true },
-      { id: 'bride', type: 'text', name: 'Bride', value: 'Amelia Rose', x: 250, y: 180, width: 400, height: 80, fontFamily: 'font-headline', fontSize: 50, color: '#800000', textAlign: 'center', editable: true },
-      { id: 'and', type: 'text', name: 'And', value: '&', x: 250, y: 260, width: 400, height: 50, fontFamily: 'font-headline', fontSize: 30, color: '#D4A27A', textAlign: 'center', editable: false },
-      { id: 'groom', type: 'text', name: 'Groom', value: 'Benjamin Carter', x: 250, y: 340, width: 400, height: 80, fontFamily: 'font-headline', fontSize: 50, color: '#800000', textAlign: 'center', editable: true },
-      { id: 'invite', type: 'text', name: 'Invitation Line', value: 'invite you to celebrate their wedding', x: 250, y: 450, width: 380, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true },
-      { id: 'date', type: 'text', name: 'Date', value: 'Saturday, October 26, 2024', x: 250, y: 520, width: 400, height: 30, fontFamily: 'font-body', fontSize: 16, color: '#4a0e0e', textAlign: 'center', editable: true },
-      { id: 'time', type: 'text', name: 'Time', value: 'at four o\'clock in the afternoon', x: 250, y: 550, width: 400, height: 30, fontFamily: 'font-body', fontSize: 16, color: '#4a0e0e', textAlign: 'center', editable: true },
-      { id: 'location', type: 'text', name: 'Location', value: 'The Grand Ballroom, New York', x: 250, y: 580, width: 400, height: 30, fontFamily: 'font-body', fontSize: 16, color: '#4a0e0e', textAlign: 'center', editable: true },
+      { id: 'title', type: 'text', name: 'Title', value: 'Together with their families', x: 250, y: 80, width: 400, height: 50, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true, fontWeight: 'normal' },
+      { id: 'bride', type: 'text', name: 'Bride', value: 'Amelia Rose', x: 250, y: 180, width: 400, height: 80, fontFamily: 'font-headline', fontSize: 50, color: '#800000', textAlign: 'center', editable: true, fontWeight: 'normal' },
+      { id: 'and', type: 'text', name: 'And', value: '&', x: 250, y: 260, width: 400, height: 50, fontFamily: 'font-headline', fontSize: 30, color: '#D4A27A', textAlign: 'center', editable: false, fontWeight: 'normal' },
+      { id: 'groom', type: 'text', name: 'Groom', value: 'Benjamin Carter', x: 250, y: 340, width: 400, height: 80, fontFamily: 'font-headline', fontSize: 50, color: '#800000', textAlign: 'center', editable: true, fontWeight: 'normal' },
+      { id: 'invite', type: 'text', name: 'Invitation Line', value: 'invite you to celebrate their wedding', x: 250, y: 450, width: 380, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true, fontWeight: 'normal' },
+      { id: 'date', type: 'text', name: 'Date', value: 'Saturday, October 26, 2024', x: 250, y: 520, width: 400, height: 30, fontFamily: 'font-body', fontSize: 16, color: '#4a0e0e', textAlign: 'center', editable: true, fontWeight: 'normal' },
+      { id: 'time', type: 'text', name: 'Time', value: 'at four o\'clock in the afternoon', x: 250, y: 550, width: 400, height: 30, fontFamily: 'font-body', fontSize: 16, color: '#4a0e0e', textAlign: 'center', editable: true, fontWeight: 'normal' },
+      { id: 'location', type: 'text', name: 'Location', value: 'The Grand Ballroom, New York', x: 250, y: 580, width: 400, height: 30, fontFamily: 'font-body', fontSize: 16, color: '#4a0e0e', textAlign: 'center', editable: true, fontWeight: 'normal' },
     ],
   },
   {
@@ -29,15 +30,15 @@ export const initialTemplates: InvitationTemplate[] = [
     height: 700,
     layers: [
       { id: 'bg-color', type: 'text', name: 'Background', value: '', x: 0, y: 0, width: 500, height: 700, color: '#1a1a1a', editable: true },
-      { id: 'event-name', type: 'text', name: 'Event Name', value: "It's a Party!", x: 40, y: 60, width: 420, height: 80, fontFamily: 'font-headline', fontSize: 70, color: '#FFFFFF', textAlign: 'left', editable: true },
-      { id: 'guest-of-honor', type: 'text', name: 'Guest of Honor', value: "You're invited to celebrate Leo's 30th Birthday", x: 40, y: 180, width: 420, height: 60, fontFamily: 'font-body', fontSize: 22, color: '#F5F5DC', textAlign: 'left', editable: true },
+      { id: 'event-name', type: 'text', name: 'Event Name', value: "It's a Party!", x: 40, y: 60, width: 420, height: 80, fontFamily: 'font-headline', fontSize: 70, color: '#FFFFFF', textAlign: 'left', editable: true, fontWeight: 'normal' },
+      { id: 'guest-of-honor', type: 'text', name: 'Guest of Honor', value: "You're invited to celebrate Leo's 30th Birthday", x: 40, y: 180, width: 420, height: 60, fontFamily: 'font-body', fontSize: 22, color: '#F5F5DC', textAlign: 'left', editable: true, fontWeight: 'normal' },
       { id: 'date-label', type: 'text', name: 'Date Label', value: 'Date', x: 40, y: 300, width: 200, height: 30, fontFamily: 'font-body', fontWeight: 'bold', fontSize: 18, color: '#D4A27A', textAlign: 'left', editable: false },
-      { id: 'date-value', type: 'text', name: 'Date', value: '12.11.2024', x: 40, y: 330, width: 200, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#FFFFFF', textAlign: 'left', editable: true },
+      { id: 'date-value', type: 'text', name: 'Date', value: '12.11.2024', x: 40, y: 330, width: 200, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#FFFFFF', textAlign: 'left', editable: true, fontWeight: 'normal' },
       { id: 'time-label', type: 'text', name: 'Time Label', value: 'Time', x: 260, y: 300, width: 200, height: 30, fontFamily: 'font-body', fontWeight: 'bold', fontSize: 18, color: '#D4A27A', textAlign: 'left', editable: false },
-      { id: 'time-value', type: 'text', name: 'Time', value: '8 PM until late', x: 260, y: 330, width: 200, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#FFFFFF', textAlign: 'left', editable: true },
+      { id: 'time-value', type: 'text', name: 'Time', value: '8 PM until late', x: 260, y: 330, width: 200, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#FFFFFF', textAlign: 'left', editable: true, fontWeight: 'normal' },
       { id: 'location-label', type: 'text', name: 'Location Label', value: 'Venue', x: 40, y: 400, width: 420, height: 30, fontFamily: 'font-body', fontWeight: 'bold', fontSize: 18, color: '#D4A27A', textAlign: 'left', editable: false },
-      { id: 'location-value', type: 'text', name: 'Location', value: 'The Rooftop Bar, 123 Urban Ave', x: 40, y: 430, width: 420, height: 60, fontFamily: 'font-body', fontSize: 18, color: '#FFFFFF', textAlign: 'left', editable: true },
-      { id: 'rsvp', type: 'text', name: 'RSVP', value: 'RSVP by 1st November to Jane at 123-456-7890', x: 250, y: 640, width: 420, height: 30, fontFamily: 'font-body', fontSize: 14, color: '#D4A27A', textAlign: 'center', editable: true },
+      { id: 'location-value', type: 'text', name: 'Location', value: 'The Rooftop Bar, 123 Urban Ave', x: 40, y: 430, width: 420, height: 60, fontFamily: 'font-body', fontSize: 18, color: '#FFFFFF', textAlign: 'left', editable: true, fontWeight: 'normal' },
+      { id: 'rsvp', type: 'text', name: 'RSVP', value: 'RSVP by 1st November to Jane at 123-456-7890', x: 250, y: 640, width: 420, height: 30, fontFamily: 'font-body', fontSize: 14, color: '#D4A27A', textAlign: 'center', editable: true, fontWeight: 'normal' },
     ],
   },
   {
@@ -49,14 +50,14 @@ export const initialTemplates: InvitationTemplate[] = [
     height: 700,
     layers: [
       { id: 'bg-image', type: 'image', name: 'Background Image', value: 'https://placehold.co/500x700.png', x: 0, y: 0, width: 500, height: 700, editable: true, aiPrompt: 'A cute and playful background for a baby shower invitation, with soft pastel colors and whimsical elements like clouds, stars, or baby animals.' },
-      { id: 'title', type: 'text', name: 'Title', value: 'Oh, Baby!', x: 250, y: 100, width: 400, height: 80, fontFamily: 'font-headline', fontSize: 60, color: '#800000', textAlign: 'center', editable: true },
-      { id: 'subtitle', type: 'text', name: 'Subtitle', value: 'A baby shower for', x: 250, y: 180, width: 400, height: 30, fontFamily: 'font-body', fontSize: 20, color: '#4a0e0e', textAlign: 'center', editable: true },
-      { id: 'parent-name', type: 'text', name: 'Parent\'s Name', value: 'Jessica & Mark', x: 250, y: 220, width: 400, height: 50, fontFamily: 'font-headline', fontSize: 36, color: '#800000', textAlign: 'center', editable: true },
-      { id: 'date', type: 'text', name: 'Date', value: 'Sunday, December 8, 2024', x: 250, y: 350, width: 400, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true },
-      { id: 'time', type: 'text', name: 'Time', value: '2:00 PM - 4:00 PM', x: 250, y: 380, width: 400, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true },
-      { id: 'location', type: 'text', name: 'Location', value: 'The Little Cottage Cafe', x: 250, y: 410, width: 400, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true },
-      { id: 'registry', type: 'text', name: 'Registry Info', value: 'Registered at BabyLand', x: 250, y: 550, width: 400, height: 30, fontFamily: 'font-body', fontSize: 16, color: '#D4A27A', textAlign: 'center', editable: true },
-      { id: 'rsvp', type: 'text', name: 'RSVP', value: 'RSVP to Sarah by Nov 25th', x: 250, y: 580, width: 400, height: 30, fontFamily: 'font-body', fontSize: 16, color: '#D4A27A', textAlign: 'center', editable: true },
+      { id: 'title', type: 'text', name: 'Title', value: 'Oh, Baby!', x: 250, y: 100, width: 400, height: 80, fontFamily: 'font-headline', fontSize: 60, color: '#800000', textAlign: 'center', editable: true, fontWeight: 'normal' },
+      { id: 'subtitle', type: 'text', name: 'Subtitle', value: 'A baby shower for', x: 250, y: 180, width: 400, height: 30, fontFamily: 'font-body', fontSize: 20, color: '#4a0e0e', textAlign: 'center', editable: true, fontWeight: 'normal' },
+      { id: 'parent-name', type: 'text', name: "Parent's Name", value: 'Jessica & Mark', x: 250, y: 220, width: 400, height: 50, fontFamily: 'font-headline', fontSize: 36, color: '#800000', textAlign: 'center', editable: true, fontWeight: 'normal' },
+      { id: 'date', type: 'text', name: 'Date', value: 'Sunday, December 8, 2024', x: 250, y: 350, width: 400, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true, fontWeight: 'normal' },
+      { id: 'time', type: 'text', name: 'Time', value: '2:00 PM - 4:00 PM', x: 250, y: 380, width: 400, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true, fontWeight: 'normal' },
+      { id: 'location', type: 'text', name: 'Location', value: 'The Little Cottage Cafe', x: 250, y: 410, width: 400, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true, fontWeight: 'normal' },
+      { id: 'registry', type: 'text', name: 'Registry Info', value: 'Registered at BabyLand', x: 250, y: 550, width: 400, height: 30, fontFamily: 'font-body', fontSize: 16, color: '#D4A27A', textAlign: 'center', editable: true, fontWeight: 'normal' },
+      { id: 'rsvp', type: 'text', name: 'RSVP', value: 'RSVP to Sarah by Nov 25th', x: 250, y: 580, width: 400, height: 30, fontFamily: 'font-body', fontSize: 16, color: '#D4A27A', textAlign: 'center', editable: true, fontWeight: 'normal' },
     ],
   },
 ];
