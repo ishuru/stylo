@@ -4,12 +4,13 @@ import { getFirestore } from "firebase/firestore";
 
 // TODO: Add your own Firebase configuration from your project settings
 const firebaseConfig = {
-  apiKey: "REPLACE_WITH_YOUR_API_KEY",
-  authDomain: "REPLACE_WITH_YOUR_AUTH_DOMAIN",
-  projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
-  storageBucket: "REPLACE_WITH_YOUR_STORAGE_BUCKET",
-  messagingSenderId: "REPLACE_WITH_YOUR_MESSAGING_SENDER_ID",
-  appId: "REPLACE_WITH_YOUR_APP_ID"
+  "projectId": "invite-canvas",
+  "appId": "1:8150896981:web:d179de5e0ad148a9afdfdc",
+  "storageBucket": "invite-canvas.firebasestorage.app",
+  "apiKey": "AIzaSyCtYHxxqaXnYK-TjLJDij5OqOWMRxo5X98",
+  "authDomain": "invite-canvas.firebaseapp.com",
+  "measurementId": "",
+  "messagingSenderId": "8150896981"
 };
 
 // Initialize Firebase
