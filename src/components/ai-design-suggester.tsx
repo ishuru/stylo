@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from 'react';
@@ -153,7 +154,7 @@ export function AiDesignSuggester() {
               placeholder="e.g., 'A fairytale wedding', 'minimalist style'"
             />
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <Button onClick={handleSuggestColors} disabled={isColorLoading || !selectedTemplate}>
               {isColorLoading ? <LoaderCircle className="animate-spin mr-2" /> : <Wand2 className="mr-2" />}
               {isColorLoading ? 'Getting...' : 'Suggest Design'}

@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useInvitation } from '@/context/invitation-context';
 import type { SavedDesign, InvitationTemplate } from '@/lib/types';
 import { useIsMobile } from '@/hooks/use-mobile';
-
-type ActiveTab = 'start' | 'templates' | 'drafts';
+import { Button } from '@/components/ui/button';
+import { Edit, Trash2, Loader2, Wand2, Search } from 'lucide-react';
 
 const TabButton: React.FC<{ active: boolean; onClick: () => void; children: React.ReactNode }> = ({ active, onClick, children }) => (
     <button
@@ -55,28 +55,23 @@ const StartFromScratch: React.FC<{
                     aria-label="Event Description"
                     disabled={isLoading}
                 />
-                 <button 
+                 <Button 
                     type="submit" 
                     disabled={isLoading || !description.trim()} 
-                    className="w-full mt-6 py-3 px-4 bg-primary text-primary-foreground font-bold rounded-lg shadow-md hover:bg-primary/90 transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
+                    className="w-full mt-6 py-3 px-4 font-bold rounded-lg shadow-md hover:bg-primary/90 transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
                 >
                     {isLoading ? (
                         <>
-                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
+                            <Loader2 className="animate-spin -ml-1 mr-3 h-5 w-5" />
                             Creating Your Canvas...
                         </>
                     ) : (
-                        <span className="flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 001.414 1.414L9 9.414V12a1 1 0 102 0V9.414l.293.293a1 1 0 001.414-1.414l-3-3z" clipRule="evenodd" />
-                            </svg>
+                        <>
+                            <Wand2 className="h-5 w-5 mr-2" />
                             Start Designing
-                        </span>
+                        </>
                     )}
-                </button>
+                </Button>
             </form>
             {error && <ErrorDisplay message={error} />}
         </div>
@@ -99,12 +94,13 @@ const TemplateGallery: React.FC<{
                     <div className="p-4 flex flex-col flex-grow">
                         <h4 className="text-lg font-bold text-primary">{template.name}</h4>
                         <p className="text-sm text-secondary-foreground flex-grow mt-1 mb-4">{template.description || 'A beautiful invitation template.'}</p>
-                        <button 
+                        <Button 
                             onClick={() => onUseTemplate(template)}
-                            className="w-full mt-auto py-2 px-4 bg-accent text-accent-foreground font-bold rounded-lg shadow-sm hover:opacity-90 transition-opacity"
+                            className="w-full mt-auto"
+                            variant="secondary"
                         >
                             Use Template
-                        </button>
+                        </Button>
                     </div>
                 </div>
             ))}
@@ -125,59 +121,54 @@ const DraftsManager: React.FC<{
         {drafts.length > 0 ? (
             <div className="space-y-4">
                 {drafts.map(draft => (
-                    <div key={draft.id} className="border rounded-lg p-3 flex items-center gap-4 bg-card">
-                        <div className="flex-shrink-0 w-16 h-24 bg-muted/50 rounded-md overflow-hidden">
+                    <div key={draft.id} className="border rounded-lg p-3 flex flex-col sm:flex-row items-center gap-4 bg-card">
+                        <div className="flex-shrink-0 w-24 h-36 sm:w-16 sm:h-24 bg-muted/50 rounded-md overflow-hidden">
                             {draft.thumbnail ? (
                                  <img src={`data:image/png;base64,${draft.thumbnail}`} alt={draft.name || 'Draft preview'} className="w-full h-full object-cover" />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center">
-                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
+                                     <Search className="h-8 w-8 text-muted-foreground" />
                                 </div>
                             )}
                         </div>
-                        <div className="flex-grow">
+                        <div className="flex-grow text-center sm:text-left">
                             <p className="font-semibold text-primary">{draft.name || 'Untitled Draft'}</p>
                             <p className="text-xs text-muted-foreground">
                                 Saved: {new Date(draft.savedAt).toLocaleString()}
                             </p>
                         </div>
-                        <div className="flex-shrink-0 flex items-center gap-2">
-                             <button 
+                        <div className="flex-shrink-0 flex sm:flex-col items-center gap-2 mt-4 sm:mt-0">
+                             <Button
+                                size="sm"
                                 onClick={() => onLoadDraft(draft.id)}
-                                className="py-2 px-3 bg-accent text-accent-foreground font-bold rounded-lg shadow-sm hover:opacity-90 transition-opacity text-sm"
                             >
                                 Load
-                            </button>
-                             <button 
+                            </Button>
+                             <Button
+                                size="sm"
+                                variant="outline"
                                 onClick={() => {
                                     const newName = prompt('Enter new name:', draft.name);
                                     if (newName) {
                                       onRenameDraft(draft.id, newName);
                                     }
                                 }}
-                                className="p-2 text-muted-foreground hover:text-primary transition-colors"
                                 title="Rename Draft"
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                    <path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
-                                </svg>
-                            </button>
-                             <button 
+                                <Edit className="h-4 w-4" />
+                            </Button>
+                             <Button
+                                size="sm"
+                                variant="destructive"
                                 onClick={() => {
                                   if (confirm('Are you sure you want to delete this draft?')) {
                                     onDeleteDraft(draft.id);
                                   }
                                 }}
-                                className="p-2 text-muted-foreground hover:text-destructive transition-colors"
                                 title="Delete Draft"
                             >
-                               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                            </button>
+                               <Trash2 className="h-4 w-4" />
+                            </Button>
                         </div>
                     </div>
                 ))}
@@ -238,7 +229,7 @@ export default function HomePage() {
     };
     
     return (
-        <main className="container mx-auto p-4" style={{ minHeight: 'calc(100vh - 110px)' }}>
+        <main className="container mx-auto p-4 md:p-8" style={{ minHeight: 'calc(100vh - 110px)' }}>
             <div className="max-w-4xl w-full mx-auto bg-card p-4 sm:p-8 rounded-xl shadow-lg">
                 <div className={`flex items-center gap-2 sm:gap-4 mb-8 border-b border-border pb-4 ${isMobile ? 'justify-around' : 'justify-center'}`}>
                     <TabButton active={activeTab === 'start'} onClick={() => setActiveTab('start')}>

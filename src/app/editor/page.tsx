@@ -41,7 +41,7 @@ function EditorHeader() {
         </div>
         <Button onClick={handleSave} size={isMobile ? 'icon' : 'default'}>
             <Save />
-            <span className="hidden md:inline">Save Draft</span>
+            <span className="hidden md:inline ml-2">Save Draft</span>
         </Button>
     </div>
   )
