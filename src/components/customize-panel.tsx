@@ -26,6 +26,7 @@ export function CustomizePanel() {
         {editableLayers.map((layer) => {
           const customLayer = customizations[layer.id] || {};
           const currentLayer = { ...layer, ...customLayer };
+          const isSingleLineText = layer.type === 'text' && layer.height < 60;
 
           return (
             <AccordionItem value={layer.id} key={layer.id}>
@@ -35,12 +36,20 @@ export function CustomizePanel() {
                   {layer.type === 'text' && (
                     <div className="space-y-2">
                       <Label htmlFor={`text-${layer.id}`}>Text</Label>
-                      <Textarea
-                        id={`text-${layer.id}`}
-                        value={currentLayer.value}
-                        onChange={(e) => updateLayer(layer.id, { value: e.target.value })}
-                        rows={3}
-                      />
+                      {isSingleLineText ? (
+                        <Input
+                          id={`text-${layer.id}`}
+                          value={currentLayer.value}
+                          onChange={(e) => updateLayer(layer.id, { value: e.target.value })}
+                        />
+                      ) : (
+                        <Textarea
+                          id={`text-${layer.id}`}
+                          value={currentLayer.value}
+                          onChange={(e) => updateLayer(layer.id, { value: e.target.value })}
+                          rows={3}
+                        />
+                      )}
                     </div>
                   )}
                   {currentLayer.color !== undefined && (
@@ -76,3 +85,4 @@ export function CustomizePanel() {
     </div>
   );
 }
+
