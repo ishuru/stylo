@@ -65,6 +65,17 @@ export default {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+        'maroon': {
+          DEFAULT: '#800000',
+          'light': '#a04040',
+          'dark': '#600000',
+        },
+        'gold': {
+          DEFAULT: '#D4A27A',
+        },
+        'parchment': {
+          DEFAULT: '#F5F5DC',
+        }
       },
       borderRadius: {
         lg: 'var(--radius)',

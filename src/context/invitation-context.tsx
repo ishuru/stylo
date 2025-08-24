@@ -1,8 +1,9 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import type { InvitationTemplate, Layer } from '@/lib/types';
+import type { InvitationTemplate, Layer, SavedDesign } from '@/lib/types';
 import { initialTemplates } from '@/lib/templates';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 
 interface Customizations {
   [layerId: string]: Partial<Layer>;
@@ -16,6 +17,15 @@ interface InvitationContextType {
   updateLayer: (layerId: string, updates: Partial<Layer>) => void;
   toggleFavorite: (templateId: string) => void;
   resetCustomizations: () => void;
+  
+  // New properties for home page
+  drafts: SavedDesign[];
+  startDesigning: (description: string) => Promise<void>;
+  useTemplate: (template: InvitationTemplate) => void;
+  loadDraft: (draftId: string) => void;
+  saveDraft: (name?: string) => Promise<void>;
+  deleteDraft: (draftId: string) => void;
+  renameDraft: (draftId: string, newName: string) => void;
 }
 
 const InvitationContext = createContext<InvitationContextType | undefined>(undefined);
@@ -24,6 +34,9 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
   const [templates, setTemplates] = useState<InvitationTemplate[]>([]);
   const [selectedTemplate, setSelectedTemplateState] = useState<InvitationTemplate | null>(null);
   const [customizations, setCustomizations] = useState<Customizations>({});
+  
+  const [drafts, setDrafts] = useLocalStorage<SavedDesign[]>('savedDesigns', []);
+  const [activeDraftId, setActiveDraftId] = useState<string | null>(null);
 
   useEffect(() => {
     const favoriteTemplates = JSON.parse(localStorage.getItem('favoriteTemplates') || '[]');
@@ -32,14 +45,36 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
       favorite: favoriteTemplates.includes(t.id),
     }));
     setTemplates(loadedTemplates);
-    if (loadedTemplates.length > 0) {
-      setSelectedTemplateState(loadedTemplates[0]);
-    }
   }, []);
-
+  
+  const useTemplate = (template: InvitationTemplate) => {
+    setSelectedTemplateState(template);
+    setCustomizations({});
+    setActiveDraftId(null);
+  };
+  
   const setSelectedTemplate = (template: InvitationTemplate | null) => {
     setSelectedTemplateState(template);
     setCustomizations({});
+    setActiveDraftId(null);
+  };
+  
+  const startDesigning = async (description: string) => {
+    // In a real app, you might use an AI to pick a template based on the description
+    const blankTemplate: InvitationTemplate = {
+      id: 'custom-template',
+      name: 'Custom Design',
+      component: 'ClassicWeddingInvitation',
+      width: 500,
+      height: 700,
+      layers: [
+        { id: 'bg', type: 'image', name: 'Background', value: 'https://placehold.co/500x700', x: 0, y: 0, width: 500, height: 700, editable: true, aiPrompt: description },
+        { id: 'text-1', type: 'text', name: 'Main Text', value: 'Your Text Here', x: 250, y: 350, width: 400, height: 100, fontFamily: 'font-headline', fontSize: 40, color: '#000000', textAlign: 'center', editable: true },
+      ],
+    };
+    setSelectedTemplateState(blankTemplate);
+    setCustomizations({});
+    setActiveDraftId(null);
   };
 
   const updateLayer = (layerId: string, updates: Partial<Layer>) => {
@@ -76,6 +111,46 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
     setCustomizations({});
   };
 
+  const saveDraft = async (name?: string) => {
+    if (!selectedTemplate) return;
+    
+    const draftName = name || (activeDraftId ? drafts.find(d => d.id === activeDraftId)?.name : null) || `Draft ${drafts.length + 1}`;
+    
+    const newDraft: SavedDesign = {
+      id: activeDraftId || Date.now().toString(),
+      name: draftName,
+      templateId: selectedTemplate.id,
+      customizations,
+      savedAt: new Date().toISOString(),
+    };
+    
+    const newDrafts = drafts.filter(d => d.id !== newDraft.id);
+    setDrafts([...newDrafts, newDraft]);
+    setActiveDraftId(newDraft.id);
+    // In a real app, you would generate a thumbnail here.
+  };
+
+  const loadDraft = (draftId: string) => {
+    const draft = drafts.find(d => d.id === draftId);
+    if (draft) {
+      const template = templates.find(t => t.id === draft.templateId);
+      if (template) {
+        setSelectedTemplateState(template);
+        setCustomizations(draft.customizations);
+        setActiveDraftId(draft.id);
+      }
+    }
+  };
+  
+  const deleteDraft = (draftId: string) => {
+    setDrafts(drafts.filter(d => d.id !== draftId));
+  };
+  
+  const renameDraft = (draftId: string, newName: string) => {
+    setDrafts(drafts.map(d => d.id === draftId ? { ...d, name: newName } : d));
+  };
+
+
   return (
     <InvitationContext.Provider
       value={{
@@ -85,7 +160,14 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
         setSelectedTemplate,
         updateLayer,
         toggleFavorite,
-        resetCustomizations
+        resetCustomizations,
+        drafts,
+        startDesigning,
+        useTemplate,
+        loadDraft,
+        saveDraft,
+        deleteDraft,
+        renameDraft
       }}
     >
       {children}
