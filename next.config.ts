@@ -1,4 +1,5 @@
 import type {NextConfig} from 'next';
+import path from 'path';
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -17,6 +18,12 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
+  },
+  webpack: (config) => {
+    const stub = path.resolve(__dirname, 'src/empty-module.ts');
+    config.resolve.alias['@opentelemetry/exporter-jaeger'] = stub;
+    config.resolve.alias['@genkit-ai/firebase'] = stub;
+    return config;
   },
 };
 
