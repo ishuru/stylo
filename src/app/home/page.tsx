@@ -7,6 +7,7 @@ import type { SavedDesign, InvitationTemplate } from '@/lib/types';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Edit, Trash2, Loader2, Wand2, Search } from 'lucide-react';
@@ -119,6 +120,7 @@ const DraftsManager: React.FC<{
 }> = ({ drafts, onLoadDraft, onDeleteDraft, onRenameDraft }) => {
     const [renameTarget, setRenameTarget] = useState<SavedDesign | null>(null);
     const [newName, setNewName] = useState('');
+    const [deleteTarget, setDeleteTarget] = useState<SavedDesign | null>(null);
 
     const handleRenameClick = (draft: SavedDesign) => {
         setRenameTarget(draft);
@@ -129,6 +131,13 @@ const DraftsManager: React.FC<{
         if (renameTarget && newName.trim()) {
             onRenameDraft(renameTarget.id, newName.trim());
             setRenameTarget(null);
+        }
+    }
+    
+    const handleDeleteConfirm = () => {
+        if (deleteTarget) {
+            onDeleteDraft(deleteTarget.id);
+            setDeleteTarget(null);
         }
     }
 
@@ -144,7 +153,7 @@ const DraftsManager: React.FC<{
                     <div key={draft.id} className="border rounded-lg p-3 flex flex-col sm:flex-row items-center gap-4 bg-card">
                         <div className="flex-shrink-0 w-24 h-36 sm:w-16 sm:h-24 bg-muted/50 rounded-md overflow-hidden">
                             {draft.thumbnail ? (
-                                 <img src={`data:image/png;base64,${draft.thumbnail}`} alt={draft.name || 'Draft preview'} className="w-full h-full object-cover" />
+                                 <img src={draft.thumbnail} alt={draft.name || 'Draft preview'} className="w-full h-full object-cover" />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center">
                                      <Search className="h-8 w-8 text-muted-foreground" />
@@ -157,7 +166,7 @@ const DraftsManager: React.FC<{
                                 Saved: {new Date(draft.savedAt).toLocaleString()}
                             </p>
                         </div>
-                        <div className="flex-shrink-0 flex items-center gap-2 mt-4 sm:mt-0 sm:flex-col">
+                        <div className="flex-shrink-0 flex items-center gap-2 mt-4 sm:mt-0">
                              <Button
                                 size="sm"
                                 onClick={() => onLoadDraft(draft.id)}
@@ -175,20 +184,37 @@ const DraftsManager: React.FC<{
                                 <Edit className="h-4 w-4 mr-1 sm:mr-0" />
                                 <span className="sm:hidden">Rename</span>
                             </Button>
-                             <Button
-                                size="sm"
-                                variant="destructive"
-                                onClick={() => {
-                                  if (confirm('Are you sure you want to delete this draft?')) {
-                                    onDeleteDraft(draft.id);
-                                  }
-                                }}
-                                title="Delete Draft"
-                                className="w-20"
-                            >
-                               <Trash2 className="h-4 w-4 mr-1 sm:mr-0" />
-                               <span className="sm:hidden">Delete</span>
-                            </Button>
+                            <AlertDialog onOpenChange={(isOpen) => !isOpen && setDeleteTarget(null)}>
+                                <AlertDialogTrigger asChild>
+                                     <Button
+                                        size="sm"
+                                        variant="destructive"
+                                        title="Delete Draft"
+                                        className="w-20"
+                                        onClick={() => setDeleteTarget(draft)}
+                                    >
+                                       <Trash2 className="h-4 w-4 mr-1 sm:mr-0" />
+                                       <span className="sm:hidden">Delete</span>
+                                    </Button>
+                                </AlertDialogTrigger>
+                                {deleteTarget?.id === draft.id && (
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone. This will permanently delete your draft
+                                                "{deleteTarget.name}".
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction onClick={handleDeleteConfirm}>
+                                                Delete
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                )}
+                            </AlertDialog>
                         </div>
                     </div>
                 ))}
@@ -315,5 +341,3 @@ export default function HomePage() {
         </main>
     );
 };
-
-    
