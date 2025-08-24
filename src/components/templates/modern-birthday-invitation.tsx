@@ -9,7 +9,7 @@ const ModernBirthdayInvitation: React.FC<{ template: InvitationTemplate }> = ({ 
 
   return (
     <div
-      className="relative overflow-hidden p-10 box-border"
+      className="relative overflow-hidden"
       style={{
         width: template.width,
         height: template.height,
@@ -29,6 +29,7 @@ const ModernBirthdayInvitation: React.FC<{ template: InvitationTemplate }> = ({ 
           fontSize: `${layer.fontSize}px`,
           fontWeight: layer.fontWeight,
           textAlign: layer.textAlign,
+          transform: 'translateX(-50%)',
         };
 
         if (layer.type === 'text') {
