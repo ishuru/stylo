@@ -1,14 +1,15 @@
+
 "use client";
 
 import React, { useState } from 'react';
 import { generateLayerImage } from '@/ai/flows/generate-layer-image';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import type { Layer } from '@/lib/types';
 import { Wand2, LoaderCircle } from 'lucide-react';
+import { Textarea } from './ui/textarea';
 
 interface LayerImageGeneratorProps {
   layer: Layer;
@@ -59,11 +60,12 @@ export function LayerImageGenerator({ layer, onImageGenerated }: LayerImageGener
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
             <Label htmlFor="prompt">Prompt</Label>
-            <Input
+            <Textarea
               id="prompt"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="e.g., A minimalist gold leaf pattern"
+              rows={4}
             />
           </div>
         </div>

@@ -1,13 +1,14 @@
+
 "use client";
 
 import React from 'react';
 import { useInvitation } from '@/context/invitation-context';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ColorPicker } from './color-picker';
 import { LayerImageGenerator } from './layer-image-generator';
+import { Input } from '@/components/ui/input';
 
 export function CustomizePanel() {
   const { selectedTemplate, customizations, updateLayer } = useInvitation();
@@ -38,6 +39,7 @@ export function CustomizePanel() {
                         id={`text-${layer.id}`}
                         value={currentLayer.value}
                         onChange={(e) => updateLayer(layer.id, { value: e.target.value })}
+                        rows={3}
                       />
                     </div>
                   )}
@@ -57,6 +59,7 @@ export function CustomizePanel() {
                         id={`image-url-${layer.id}`}
                         value={currentLayer.value}
                         onChange={(e) => updateLayer(layer.id, { value: e.target.value })}
+                        placeholder="https://placehold.co/500x700.png"
                       />
                       <LayerImageGenerator 
                         layer={currentLayer} 
