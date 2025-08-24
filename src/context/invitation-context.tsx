@@ -28,7 +28,7 @@ interface InvitationContextType {
   
   drafts: SavedDesign[];
   startDesigning: (description: string) => Promise<void>;
-  useTemplate: (template: InvitationTemplate) => void;
+  selectTemplate: (template: InvitationTemplate) => void;
   loadDraft: (draftId: string) => void;
   saveDraft: (name?: string) => Promise<void>;
   deleteDraft: (draftId: string) => void;
@@ -79,7 +79,7 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
   }, [fetchDrafts]);
 
   
-  const useTemplate = (template: InvitationTemplate) => {
+  const selectTemplate = (template: InvitationTemplate) => {
     setSelectedTemplateState(template);
     setCustomizations({});
     setActiveDraftId(null);
@@ -227,7 +227,7 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
         resetCustomizations,
         drafts,
         startDesigning,
-        useTemplate,
+        selectTemplate,
         loadDraft,
         saveDraft,
         deleteDraft,
