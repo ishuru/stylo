@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,18 +12,18 @@ export function EditorSidebar() {
   return (
     <div className="h-full flex flex-col bg-card border-r">
       <Tabs defaultValue="customize" className="flex-1 flex flex-col overflow-hidden">
-        <TabsList className="grid w-full grid-cols-3 gap-1 rounded-none border-b p-1">
-          <TabsTrigger value="templates" className="rounded-sm">
-            <BookMarked className="mr-2 h-4 w-4" />
-            Templates
+        <TabsList className="grid w-full grid-cols-3 gap-1 rounded-none border-b p-1 h-auto">
+          <TabsTrigger value="templates" className="rounded-sm flex-col h-auto p-2 gap-1">
+            <BookMarked className="h-5 w-5" />
+            <span className="text-xs">Templates</span>
           </TabsTrigger>
-          <TabsTrigger value="customize" className="rounded-sm">
-            <Palette className="mr-2 h-4 w-4" />
-            Customize
+          <TabsTrigger value="customize" className="rounded-sm flex-col h-auto p-2 gap-1">
+            <Palette className="h-5 w-5" />
+            <span className="text-xs">Customize</span>
           </TabsTrigger>
-          <TabsTrigger value="ai-tools" className="rounded-sm">
-            <Wand2 className="mr-2 h-4 w-4" />
-            AI Tools
+          <TabsTrigger value="ai-tools" className="rounded-sm flex-col h-auto p-2 gap-1">
+            <Wand2 className="h-5 w-5" />
+            <span className="text-xs">AI Tools</span>
           </TabsTrigger>
         </TabsList>
         <ScrollArea className="flex-1">
