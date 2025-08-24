@@ -5,18 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useInvitation } from '@/context/invitation-context';
 import type { SavedDesign, InvitationTemplate } from '@/lib/types';
 
-interface HomePageComponentProps {
-    onStartDesigning: (description: string) => void;
-    onUseTemplate: (template: InvitationTemplate) => void;
-    onLoadDraft: (draftId: string) => void;
-    onDeleteDraft: (draftId: string) => void;
-    onRenameDraft: (draftId: string, newName: string) => void;
-    templates: InvitationTemplate[];
-    drafts: SavedDesign[];
-    isLoading: boolean;
-    error: string | null;
-}
-
 type ActiveTab = 'start' | 'templates' | 'drafts';
 
 const TabButton: React.FC<{ active: boolean; onClick: () => void; children: React.ReactNode }> = ({ active, onClick, children }) => (
@@ -38,8 +26,11 @@ const ErrorDisplay: React.FC<{ message: string }> = ({ message }) => (
     </div>
 );
 
-
-const StartFromScratch: React.FC<Pick<HomePageComponentProps, 'onStartDesigning' | 'isLoading' | 'error'>> = ({ onStartDesigning, isLoading, error }) => {
+const StartFromScratch: React.FC<{ 
+    onStartDesigning: (description: string) => void;
+    isLoading: boolean;
+    error: string | null;
+}> = ({ onStartDesigning, isLoading, error }) => {
     const [description, setDescription] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -91,7 +82,10 @@ const StartFromScratch: React.FC<Pick<HomePageComponentProps, 'onStartDesigning'
     )
 };
 
-const TemplateGallery: React.FC<Pick<HomePageComponentProps, 'templates' | 'onUseTemplate'>> = ({ templates, onUseTemplate }) => (
+const TemplateGallery: React.FC<{
+    templates: InvitationTemplate[];
+    onUseTemplate: (template: InvitationTemplate) => void;
+}> = ({ templates, onUseTemplate }) => (
     <div>
         <h3 className="text-2xl font-headline text-secondary mb-2 text-center">Browse Templates</h3>
         <p className="text-muted-foreground mb-6 text-center">Get started quickly with one of our pre-designed templates.</p>
@@ -117,8 +111,12 @@ const TemplateGallery: React.FC<Pick<HomePageComponentProps, 'templates' | 'onUs
     </div>
 );
 
-const DraftsManager: React.FC<Pick<HomePageComponentProps, 'drafts' | 'onLoadDraft' | 'onDeleteDraft' | 'onRenameDraft'>> = ({ drafts, onLoadDraft, onDeleteDraft, onRenameDraft }) => {
-    
+const DraftsManager: React.FC<{
+    drafts: SavedDesign[];
+    onLoadDraft: (draftId: string) => void;
+    onDeleteDraft: (draftId: string) => void;
+    onRenameDraft: (draftId: string, newName: string) => void;
+}> = ({ drafts, onLoadDraft, onDeleteDraft, onRenameDraft }) => {
     return (
      <div>
         <h3 className="text-2xl font-headline text-secondary mb-2 text-center">My Drafts</h3>
@@ -194,7 +192,8 @@ const DraftsManager: React.FC<Pick<HomePageComponentProps, 'drafts' | 'onLoadDra
             </div>
         )}
     </div>
-);
+    );
+};
 
 
 export default function HomePage() {
@@ -235,26 +234,6 @@ export default function HomePage() {
         loadDraft(draftId);
         router.push('/editor');
     };
-
-    const handleDeleteDraft = (draftId: string) => {
-        deleteDraft(draftId);
-    }
-
-    const handleRenameDraft = (draftId: string, newName: string) => {
-        renameDraft(draftId, newName);
-    }
-    
-    const props: HomePageComponentProps = {
-        templates,
-        drafts,
-        isLoading,
-        error,
-        onStartDesigning: handleStartDesigning,
-        onUseTemplate: handleUseTemplate,
-        onLoadDraft: handleLoadDraft,
-        onDeleteDraft: handleDeleteDraft,
-        onRenameDraft: handleRenameDraft
-    }
     
     return (
         <main className="container mx-auto p-4 sm:p-6 lg:p-8" style={{ minHeight: 'calc(100vh - 110px)' }}>
@@ -267,18 +246,28 @@ export default function HomePage() {
                         Templates
                     </TabButton>
                     <TabButton active={activeTab === 'drafts'} onClick={() => setActiveTab('drafts')}>
-                        My Drafts ({props.drafts.length})
+                        My Drafts ({drafts.length})
                     </TabButton>
                 </div>
 
                 <div>
-                    {activeTab === 'start' && <StartFromScratch {...props} />}
-                    {activeTab === 'templates' && <TemplateGallery {...props} />}
-                    {activeTab === 'drafts' && <DraftsManager {...props} />}
+                    {activeTab === 'start' && <StartFromScratch 
+                        onStartDesigning={handleStartDesigning}
+                        isLoading={isLoading}
+                        error={error}
+                    />}
+                    {activeTab === 'templates' && <TemplateGallery 
+                        templates={templates} 
+                        onUseTemplate={handleUseTemplate} 
+                    />}
+                    {activeTab === 'drafts' && <DraftsManager 
+                        drafts={drafts}
+                        onLoadDraft={handleLoadDraft}
+                        onDeleteDraft={deleteDraft}
+                        onRenameDraft={renameDraft}
+                    />}
                 </div>
             </div>
         </main>
     );
 };
-
-    
