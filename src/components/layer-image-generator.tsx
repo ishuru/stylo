@@ -17,7 +17,7 @@ interface LayerImageGeneratorProps {
 }
 
 export function LayerImageGenerator({ layer, onImageGenerated }: LayerImageGeneratorProps) {
-  const [prompt, setPrompt] = useState(layer.aiPrompt || 'A beautiful floral background for a wedding invitation');
+  const [prompt, setPrompt] = useState(layer.aiPrompt || 'A beautiful background for an invitation');
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
