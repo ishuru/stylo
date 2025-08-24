@@ -85,20 +85,33 @@ export function AiDesignSuggester() {
     }
   };
 
-  const applyColorSuggestions = () => {
+  const applyDesignSuggestions = () => {
     if (!colorSuggestions || !selectedTemplate) return;
-    
+
     resetCustomizations();
-    
+
     let colorIndex = 0;
     selectedTemplate.layers.forEach(layer => {
       if (layer.editable && layer.color && colorSuggestions.suggestedColors.length > 0) {
         updateLayer(layer.id, { color: colorSuggestions.suggestedColors[colorIndex % colorSuggestions.suggestedColors.length] });
         colorIndex++;
       }
+      if (layer.editable && layer.type === 'text' && colorSuggestions.suggestedFonts.length > 0) {
+        const fontFamily = layer.fontFamily === 'font-headline' ? 'font-headline' : 'font-body';
+        const suggestedFont = fontFamily === 'font-headline' ? colorSuggestions.suggestedFonts[0] : colorSuggestions.suggestedFonts[1]
+        
+        // This is a simplification. A more robust solution would be to load the fonts.
+        if (suggestedFont) {
+          if (suggestedFont.toLowerCase().includes('playfair')) {
+             updateLayer(layer.id, { fontFamily: 'font-headline' });
+          } else if (suggestedFont.toLowerCase().includes('sans')) {
+             updateLayer(layer.id, { fontFamily: 'font-body' });
+          }
+        }
+      }
     });
 
-    toast({ title: 'Success', description: 'AI color suggestions have been applied.' });
+    toast({ title: 'Success', description: 'AI design suggestions have been applied.' });
   };
   
   const applyTextSuggestions = () => {
@@ -143,7 +156,7 @@ export function AiDesignSuggester() {
           <div className="grid grid-cols-2 gap-2">
             <Button onClick={handleSuggestColors} disabled={isColorLoading || !selectedTemplate}>
               {isColorLoading ? <LoaderCircle className="animate-spin mr-2" /> : <Wand2 className="mr-2" />}
-              {isColorLoading ? 'Getting...' : 'Suggest Colors'}
+              {isColorLoading ? 'Getting...' : 'Suggest Design'}
             </Button>
             <Button onClick={handleSuggestText} disabled={isTextLoading || !selectedTemplate}>
               {isTextLoading ? <LoaderCircle className="animate-spin mr-2" /> : <Sparkles className="mr-2" />}
@@ -156,7 +169,7 @@ export function AiDesignSuggester() {
       {colorSuggestions && (
         <Card>
           <CardHeader>
-            <CardTitle>Color Suggestions</CardTitle>
+            <CardTitle>Design Suggestions</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
@@ -175,7 +188,7 @@ export function AiDesignSuggester() {
               <h4 className="font-semibold mb-2">Reasoning</h4>
               <p className="text-sm text-muted-foreground">{colorSuggestions.reasoning}</p>
             </div>
-            <Button onClick={applyColorSuggestions} className="w-full" variant="outline">Apply Color Palette</Button>
+            <Button onClick={applyDesignSuggestions} className="w-full" variant="outline">Apply Design</Button>
           </CardContent>
         </Card>
       )}
