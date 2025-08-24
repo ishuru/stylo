@@ -9,12 +9,14 @@ import { Download } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ClassicWeddingInvitation from './templates/classic-wedding-invitation';
 import ModernBirthdayInvitation from './templates/modern-birthday-invitation';
+import PlayfulBabyShower from './templates/playful-baby-shower';
 import type { InvitationTemplate } from '@/lib/types';
 import { Skeleton } from './ui/skeleton';
 
 const templateComponents: { [key: string]: React.FC<{ template: InvitationTemplate }> } = {
   ClassicWeddingInvitation: ClassicWeddingInvitation,
   ModernBirthdayInvitation: ModernBirthdayInvitation,
+  PlayfulBabyShower: PlayfulBabyShower,
 };
 
 export function Canvas() {

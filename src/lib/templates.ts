@@ -8,7 +8,7 @@ export const initialTemplates: InvitationTemplate[] = [
     width: 500,
     height: 700,
     layers: [
-      { id: 'bg', type: 'image', name: 'Background', value: 'https://placehold.co/500x700', x: 0, y: 0, width: 500, height: 700, editable: true },
+      { id: 'bg', type: 'image', name: 'Background', value: 'https://placehold.co/500x700', x: 0, y: 0, width: 500, height: 700, editable: true, aiPrompt: 'A beautiful, elegant background for a classic wedding invitation, perhaps with subtle floral hints or watercolor textures.' },
       { id: 'title', type: 'text', name: 'Title', value: 'Together with their families', x: 250, y: 80, width: 400, height: 50, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true },
       { id: 'bride', type: 'text', name: 'Bride', value: 'Amelia Rose', x: 250, y: 180, width: 400, height: 80, fontFamily: 'font-headline', fontSize: 50, color: '#800000', textAlign: 'center', editable: true },
       { id: 'and', type: 'text', name: 'And', value: '&', x: 250, y: 260, width: 400, height: 50, fontFamily: 'font-headline', fontSize: 30, color: '#D4A27A', textAlign: 'center', editable: false },
@@ -36,6 +36,24 @@ export const initialTemplates: InvitationTemplate[] = [
       { id: 'location-label', type: 'text', name: 'Location Label', value: 'Venue', x: 40, y: 400, width: 420, height: 30, fontFamily: 'font-body', fontWeight: 'bold', fontSize: 18, color: '#D4A27A', textAlign: 'left', editable: false },
       { id: 'location-value', type: 'text', name: 'Location', value: 'The Rooftop Bar, 123 Urban Ave', x: 40, y: 430, width: 420, height: 60, fontFamily: 'font-body', fontSize: 18, color: '#FFFFFF', textAlign: 'left', editable: true },
       { id: 'rsvp', type: 'text', name: 'RSVP', value: 'RSVP by 1st November to Jane at 123-456-7890', x: 250, y: 640, width: 420, height: 30, fontFamily: 'font-body', fontSize: 14, color: '#D4A27A', textAlign: 'center', editable: true },
+    ],
+  },
+  {
+    id: 'template-baby-shower-playful',
+    name: 'Playful Baby Shower',
+    component: 'PlayfulBabyShower',
+    width: 500,
+    height: 700,
+    layers: [
+      { id: 'bg-image', type: 'image', name: 'Background Image', value: 'https://placehold.co/500x700', x: 0, y: 0, width: 500, height: 700, editable: true, aiPrompt: 'A cute and playful background for a baby shower invitation, with soft pastel colors and whimsical elements like clouds, stars, or baby animals.' },
+      { id: 'title', type: 'text', name: 'Title', value: 'Oh, Baby!', x: 250, y: 100, width: 400, height: 80, fontFamily: 'font-headline', fontSize: 60, color: '#800000', textAlign: 'center', editable: true },
+      { id: 'subtitle', type: 'text', name: 'Subtitle', value: 'A baby shower for', x: 250, y: 180, width: 400, height: 30, fontFamily: 'font-body', fontSize: 20, color: '#4a0e0e', textAlign: 'center', editable: true },
+      { id: 'parent-name', type: 'text', name: 'Parent\'s Name', value: 'Jessica & Mark', x: 250, y: 220, width: 400, height: 50, fontFamily: 'font-headline', fontSize: 36, color: '#800000', textAlign: 'center', editable: true },
+      { id: 'date', type: 'text', name: 'Date', value: 'Sunday, December 8, 2024', x: 250, y: 350, width: 400, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true },
+      { id: 'time', type: 'text', name: 'Time', value: '2:00 PM - 4:00 PM', x: 250, y: 380, width: 400, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true },
+      { id: 'location', type: 'text', name: 'Location', value: 'The Little Cottage Cafe', x: 250, y: 410, width: 400, height: 30, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true },
+      { id: 'registry', type: 'text', name: 'Registry Info', value: 'Registered at BabyLand', x: 250, y: 550, width: 400, height: 30, fontFamily: 'font-body', fontSize: 16, color: '#D4A27A', textAlign: 'center', editable: true },
+      { id: 'rsvp', type: 'text', name: 'RSVP', value: 'RSVP to Sarah by Nov 25th', x: 250, y: 580, width: 400, height: 30, fontFamily: 'font-body', fontSize: 16, color: '#D4A27A', textAlign: 'center', editable: true },
     ],
   },
 ];
