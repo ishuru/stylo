@@ -187,6 +187,7 @@ const DraftsManager: React.FC<{
     );
 };
 
+type ActiveTab = 'start' | 'templates' | 'drafts';
 
 export default function HomePage() {
     const [activeTab, setActiveTab] = useState<ActiveTab>('start');
