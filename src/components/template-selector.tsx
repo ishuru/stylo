@@ -46,7 +46,7 @@ export function TemplateSelector() {
                 <Star
                   className={cn(
                     "w-5 h-5 transition-colors",
-                    template.favorite ? "fill-accent text-accent" : "text-muted-foreground"
+                    template.favorite ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"
                   )}
                 />
               </Button>

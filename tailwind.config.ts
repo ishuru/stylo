@@ -79,6 +79,9 @@ export default {
             DEFAULT: '#F5E9D6',
         },
         'text-secondary': '#374151',
+        yellow: {
+          400: '#FBBF24',
+        }
       },
       borderRadius: {
         lg: 'var(--radius)',
