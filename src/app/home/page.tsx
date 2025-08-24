@@ -2,6 +2,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useInvitation } from '@/context/invitation-context';
 import type { SavedDesign, InvitationTemplate } from '@/lib/types';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -94,7 +95,13 @@ const TemplateGallery: React.FC<{
             {templates.map(template => (
                 <div key={template.id} className="border rounded-lg flex flex-col bg-card overflow-hidden shadow-sm transition-shadow hover:shadow-lg">
                     <div className="aspect-[5/7] bg-muted/50">
-                         <img src={`https://placehold.co/${template.width}x${template.height}.png?text=${encodeURIComponent(template.name)}`} alt={template.name} className="w-full h-full object-cover"/>
+                        <Image
+                            src={`https://placehold.co/${template.width}x${template.height}.png?text=${encodeURIComponent(template.name)}`}
+                            alt={template.name}
+                            width={template.width}
+                            height={template.height}
+                            className="w-full h-full object-cover"
+                        />
                     </div>
                     <div className="p-4 flex flex-col flex-grow">
                         <h4 className="text-lg font-bold text-primary">{template.name}</h4>
@@ -152,12 +159,19 @@ const DraftsManager: React.FC<{
             <div className="space-y-4">
                 {drafts.map(draft => (
                     <div key={draft.id} className="border rounded-lg p-3 flex flex-col sm:flex-row items-center gap-4 bg-card">
-                        <div className="flex-shrink-0 w-24 h-36 sm:w-16 sm:h-24 bg-muted/50 rounded-md overflow-hidden">
+                        <div className="relative flex-shrink-0 w-24 h-36 sm:w-16 sm:h-24 bg-muted/50 rounded-md overflow-hidden">
                             {draft.thumbnail ? (
-                                 <img src={draft.thumbnail} alt={draft.name || 'Draft preview'} className="w-full h-full object-cover" />
+                                <Image
+                                    src={draft.thumbnail}
+                                    alt={draft.name || 'Draft preview'}
+                                    fill
+                                    sizes="96px"
+                                    className="object-cover"
+                                    unoptimized
+                                />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center">
-                                     <Search className="h-8 w-8 text-muted-foreground" />
+                                    <Search className="h-8 w-8 text-muted-foreground" />
                                 </div>
                             )}
                         </div>

@@ -1,8 +1,33 @@
 import type {NextConfig} from 'next';
 import path from 'path';
 
+const securityHeaders = [
+  {
+    key: 'Content-Security-Policy',
+    value:
+      "default-src 'self'; img-src 'self' https://placehold.co data:; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline';",
+  },
+  {
+    key: 'Referrer-Policy',
+    value: 'no-referrer',
+  },
+  {
+    key: 'X-Frame-Options',
+    value: 'DENY',
+  },
+  {
+    key: 'X-Content-Type-Options',
+    value: 'nosniff',
+  },
+  {
+    key: 'Strict-Transport-Security',
+    value: 'max-age=63072000; includeSubDomains; preload',
+  },
+];
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  poweredByHeader: false,
+  compress: true,
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -19,12 +44,4 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack: (config) => {
-    const stub = path.resolve(__dirname, 'src/empty-module.ts');
-    config.resolve.alias['@opentelemetry/exporter-jaeger'] = stub;
-    config.resolve.alias['@genkit-ai/firebase'] = stub;
-    return config;
-  },
-};
-
 export default nextConfig;
