@@ -6,6 +6,9 @@ import { useInvitation } from '@/context/invitation-context';
 import type { SavedDesign, InvitationTemplate } from '@/lib/types';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Edit, Trash2, Loader2, Wand2, Search } from 'lucide-react';
 
 const TabButton: React.FC<{ active: boolean; onClick: () => void; children: React.ReactNode }> = ({ active, onClick, children }) => (
@@ -114,10 +117,27 @@ const DraftsManager: React.FC<{
     onDeleteDraft: (draftId: string) => void;
     onRenameDraft: (draftId: string, newName: string) => void;
 }> = ({ drafts, onLoadDraft, onDeleteDraft, onRenameDraft }) => {
+    const [renameTarget, setRenameTarget] = useState<SavedDesign | null>(null);
+    const [newName, setNewName] = useState('');
+
+    const handleRenameClick = (draft: SavedDesign) => {
+        setRenameTarget(draft);
+        setNewName(draft.name);
+    }
+
+    const handleRenameSave = () => {
+        if (renameTarget && newName.trim()) {
+            onRenameDraft(renameTarget.id, newName.trim());
+            setRenameTarget(null);
+        }
+    }
+
     return (
-     <div>
-        <h3 className="text-2xl font-headline text-secondary-foreground mb-2 text-center">My Drafts</h3>
-        <p className="text-muted-foreground mb-6 text-center">Continue working on your saved projects.</p>
+     <>
+        <div className="sm:text-center">
+            <h3 className="text-2xl font-headline text-secondary-foreground mb-2">My Drafts</h3>
+            <p className="text-muted-foreground mb-6">Continue working on your saved projects.</p>
+        </div>
         {drafts.length > 0 ? (
             <div className="space-y-4">
                 {drafts.map(draft => (
@@ -137,25 +157,23 @@ const DraftsManager: React.FC<{
                                 Saved: {new Date(draft.savedAt).toLocaleString()}
                             </p>
                         </div>
-                        <div className="flex-shrink-0 flex sm:flex-col items-center gap-2 mt-4 sm:mt-0">
+                        <div className="flex-shrink-0 flex items-center gap-2 mt-4 sm:mt-0 sm:flex-col">
                              <Button
                                 size="sm"
                                 onClick={() => onLoadDraft(draft.id)}
+                                className="w-20"
                             >
                                 Load
                             </Button>
                              <Button
                                 size="sm"
                                 variant="outline"
-                                onClick={() => {
-                                    const newName = prompt('Enter new name:', draft.name);
-                                    if (newName) {
-                                      onRenameDraft(draft.id, newName);
-                                    }
-                                }}
+                                onClick={() => handleRenameClick(draft)}
                                 title="Rename Draft"
+                                className="w-20"
                             >
-                                <Edit className="h-4 w-4" />
+                                <Edit className="h-4 w-4 mr-1 sm:mr-0" />
+                                <span className="sm:hidden">Rename</span>
                             </Button>
                              <Button
                                 size="sm"
@@ -166,8 +184,10 @@ const DraftsManager: React.FC<{
                                   }
                                 }}
                                 title="Delete Draft"
+                                className="w-20"
                             >
-                               <Trash2 className="h-4 w-4" />
+                               <Trash2 className="h-4 w-4 mr-1 sm:mr-0" />
+                               <span className="sm:hidden">Delete</span>
                             </Button>
                         </div>
                     </div>
@@ -183,7 +203,37 @@ const DraftsManager: React.FC<{
                 <p className="text-sm text-muted-foreground">Your saved invitations will appear here.</p>
             </div>
         )}
-    </div>
+        <Dialog open={!!renameTarget} onOpenChange={(isOpen) => !isOpen && setRenameTarget(null)}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Rename Draft</DialogTitle>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="name" className="text-right">
+                            Name
+                        </Label>
+                        <Input
+                            id="name"
+                            value={newName}
+                            onChange={(e) => setNewName(e.target.value)}
+                            className="col-span-3"
+                        />
+                    </div>
+                </div>
+                <DialogFooter>
+                    <DialogClose asChild>
+                         <Button type="button" variant="secondary">
+                            Cancel
+                        </Button>
+                    </DialogClose>
+                    <Button type="button" onClick={handleRenameSave}>
+                        Save
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+     </>
     );
 };
 
@@ -265,3 +315,5 @@ export default function HomePage() {
         </main>
     );
 };
+
+    
