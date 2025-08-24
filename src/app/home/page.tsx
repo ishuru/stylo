@@ -11,6 +11,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Edit, Trash2, Loader2, Wand2, Search } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
 
 const TabButton: React.FC<{ active: boolean; onClick: () => void; children: React.ReactNode }> = ({ active, onClick, children }) => (
     <button
@@ -50,7 +51,7 @@ const StartFromScratch: React.FC<{
             <h3 className="text-2xl font-headline text-secondary-foreground mb-2">Describe Your Event</h3>
             <p className="text-muted-foreground mb-6">Let's start by getting the details. What kind of invitation are you creating today?</p>
             <form onSubmit={handleSubmit}>
-                <textarea
+                <Textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="e.g., A traditional South Indian baby shower, a modern minimalist wedding, a fun 5th birthday party..."
