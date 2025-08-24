@@ -64,10 +64,16 @@ const prompt = ai.definePrompt({
   
   Your task is to generate a complete, structured invitation template based on the user's event description.
   The template should be 500px wide and 700px high.
-  The template should always use the 'ClassicWeddingInvitation' component.
+
+  Based on the user's description, you must choose the most appropriate component to use from the following list:
+  - 'ClassicWeddingInvitation': For weddings, formal events.
+  - 'ModernBirthdayInvitation': For birthdays, parties, modern events.
+  - 'PlayfulBabyShower': For baby showers, kid's events, playful themes.
   
-  Based on the description, create a set of layers for the invitation. This should include:
-  - A main background image layer. Use a placeholder from https://placehold.co and ensure the URL ends in .png. The aiPrompt for this layer should be a creative interpretation of the user's description.
+  Set the 'component' field in your output to the name of the component you choose.
+
+  Based on the description and your chosen component, create a set of layers for the invitation. This should include:
+  - A main background image layer (or a background color layer for 'ModernBirthdayInvitation'). Use a placeholder from https://placehold.co and ensure the URL ends in .png. The aiPrompt for this layer should be a creative interpretation of the user's description.
   - Multiple text layers for all the typical elements of an invitation (e.g., title, names, date, time, location, RSVP).
   - Use logical positioning (x, y, width, height) for each layer. For centered text, x should be 250.
   - Choose appropriate fonts ('font-headline' for important text, 'font-body' for details), font sizes, and colors that match the theme.
@@ -91,7 +97,7 @@ const generateInvitationTemplateFlow = ai.defineFlow(
     if (!output) {
       throw new Error('Failed to generate invitation template.');
     }
-    // Ensure the component is always set correctly, as the AI might hallucinate.
-    return { ...output, component: 'ClassicWeddingInvitation', id: `custom-${Date.now()}` };
+    // Set a unique ID for the generated template
+    return { ...output, id: `ai-${output.component}-${Date.now()}` };
   }
 );
