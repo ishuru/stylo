@@ -8,7 +8,7 @@ export const initialTemplates: InvitationTemplate[] = [
     width: 500,
     height: 700,
     layers: [
-      { id: 'bg', type: 'image', name: 'Background', value: 'https://placehold.co/500x700', x: 0, y: 0, width: 500, height: 700, editable: true, aiPrompt: 'A beautiful, elegant background for a classic wedding invitation, perhaps with subtle floral hints or watercolor textures.' },
+      { id: 'bg', type: 'image', name: 'Background', value: 'https://placehold.co/500x700.png', x: 0, y: 0, width: 500, height: 700, editable: true, aiPrompt: 'A beautiful, elegant background for a classic wedding invitation, perhaps with subtle floral hints or watercolor textures.' },
       { id: 'title', type: 'text', name: 'Title', value: 'Together with their families', x: 250, y: 80, width: 400, height: 50, fontFamily: 'font-body', fontSize: 18, color: '#4a0e0e', textAlign: 'center', editable: true },
       { id: 'bride', type: 'text', name: 'Bride', value: 'Amelia Rose', x: 250, y: 180, width: 400, height: 80, fontFamily: 'font-headline', fontSize: 50, color: '#800000', textAlign: 'center', editable: true },
       { id: 'and', type: 'text', name: 'And', value: '&', x: 250, y: 260, width: 400, height: 50, fontFamily: 'font-headline', fontSize: 30, color: '#D4A27A', textAlign: 'center', editable: false },
@@ -45,7 +45,7 @@ export const initialTemplates: InvitationTemplate[] = [
     width: 500,
     height: 700,
     layers: [
-      { id: 'bg-image', type: 'image', name: 'Background Image', value: 'https://placehold.co/500x700', x: 0, y: 0, width: 500, height: 700, editable: true, aiPrompt: 'A cute and playful background for a baby shower invitation, with soft pastel colors and whimsical elements like clouds, stars, or baby animals.' },
+      { id: 'bg-image', type: 'image', name: 'Background Image', value: 'https://placehold.co/500x700.png', x: 0, y: 0, width: 500, height: 700, editable: true, aiPrompt: 'A cute and playful background for a baby shower invitation, with soft pastel colors and whimsical elements like clouds, stars, or baby animals.' },
       { id: 'title', type: 'text', name: 'Title', value: 'Oh, Baby!', x: 250, y: 100, width: 400, height: 80, fontFamily: 'font-headline', fontSize: 60, color: '#800000', textAlign: 'center', editable: true },
       { id: 'subtitle', type: 'text', name: 'Subtitle', value: 'A baby shower for', x: 250, y: 180, width: 400, height: 30, fontFamily: 'font-body', fontSize: 20, color: '#4a0e0e', textAlign: 'center', editable: true },
       { id: 'parent-name', type: 'text', name: 'Parent\'s Name', value: 'Jessica & Mark', x: 250, y: 220, width: 400, height: 50, fontFamily: 'font-headline', fontSize: 36, color: '#800000', textAlign: 'center', editable: true },

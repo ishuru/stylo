@@ -16,7 +16,7 @@ const LayerSchema = z.object({
   id: z.string().describe("A unique identifier for the layer (e.g., 'title', 'bg-image')."),
   type: z.enum(['text', 'image']).describe("The type of the layer."),
   name: z.string().describe("A user-friendly name for the layer (e.g., 'Main Title', 'Background Image')."),
-  value: z.string().describe("The content of the layer. For text, this is the text itself. For an image, this is a placeholder URL from placehold.co (e.g., 'https://placehold.co/500x700')."),
+  value: z.string().describe("The content of the layer. For text, this is the text itself. For an image, this is a placeholder URL from placehold.co (e.g., 'https://placehold.co/500x700.png')."),
   x: z.number().describe("The x-coordinate of the layer's center, in pixels."),
   y: z.number().describe("The y-coordinate of the layer's top edge, in pixels."),
   width: z.number().describe("The width of the layer, in pixels."),
@@ -67,7 +67,7 @@ const prompt = ai.definePrompt({
   The template should always use the 'ClassicWeddingInvitation' component.
   
   Based on the description, create a set of layers for the invitation. This should include:
-  - A main background image layer. Use a placeholder from https://placehold.co. The aiPrompt for this layer should be a creative interpretation of the user's description.
+  - A main background image layer. Use a placeholder from https://placehold.co and ensure the URL ends in .png. The aiPrompt for this layer should be a creative interpretation of the user's description.
   - Multiple text layers for all the typical elements of an invitation (e.g., title, names, date, time, location, RSVP).
   - Use logical positioning (x, y, width, height) for each layer. For centered text, x should be 250.
   - Choose appropriate fonts ('font-headline' for important text, 'font-body' for details), font sizes, and colors that match the theme.
