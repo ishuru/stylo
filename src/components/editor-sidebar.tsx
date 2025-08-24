@@ -9,18 +9,18 @@ import { BookMarked, Palette, Wand2 } from "lucide-react";
 
 export function EditorSidebar() {
   return (
-    <div className="h-full flex flex-col">
-      <Tabs defaultValue="templates" className="flex-1 flex flex-col overflow-hidden">
-        <TabsList className="m-4">
-          <TabsTrigger value="templates" className="w-full">
+    <div className="h-full flex flex-col bg-card border-r">
+      <Tabs defaultValue="customize" className="flex-1 flex flex-col overflow-hidden">
+        <TabsList className="grid w-full grid-cols-3 gap-1 rounded-none border-b p-1">
+          <TabsTrigger value="templates" className="rounded-sm">
             <BookMarked className="mr-2 h-4 w-4" />
             Templates
           </TabsTrigger>
-          <TabsTrigger value="customize" className="w-full">
+          <TabsTrigger value="customize" className="rounded-sm">
             <Palette className="mr-2 h-4 w-4" />
             Customize
           </TabsTrigger>
-          <TabsTrigger value="ai-tools" className="w-full">
+          <TabsTrigger value="ai-tools" className="rounded-sm">
             <Wand2 className="mr-2 h-4 w-4" />
             AI Tools
           </TabsTrigger>

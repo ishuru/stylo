@@ -34,15 +34,17 @@ function EditorHeader() {
   }
 
   return (
-    <div className="p-4 border-b bg-card flex justify-between items-center">
-        <div className="flex items-center gap-4">
+    <div className="p-2 border-b bg-card flex justify-between items-center gap-2">
+        <div className="flex items-center gap-2">
             <SidebarTrigger className="md:hidden"/>
-            <h2 className="text-2xl font-bold font-headline text-primary hidden md:block">Invite Canvas</h2>
+            <h1 className="text-xl font-bold font-headline text-primary">Invite Canvas</h1>
         </div>
-        <Button onClick={handleSave} size={isMobile ? 'icon' : 'default'}>
-            <Save />
-            <span className="hidden md:inline ml-2">Save Draft</span>
-        </Button>
+        <div className="flex items-center gap-2">
+            <Button onClick={handleSave} size="sm">
+                <Save className="h-4 w-4" />
+                <span className="hidden md:inline ml-2">Save</span>
+            </Button>
+        </div>
     </div>
   )
 }
@@ -50,16 +52,16 @@ function EditorHeader() {
 function Editor() {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full">
+      <div className="flex min-h-screen w-full bg-muted/40">
         <Sidebar>
           <EditorSidebar />
         </Sidebar>
-        <SidebarInset className="flex-1 flex flex-col">
-          <EditorHeader />
-          <div className="flex-1 overflow-auto">
-            <Canvas />
-          </div>
-        </SidebarInset>
+        <div className="flex flex-col w-full">
+            <EditorHeader />
+            <div className="flex-1 overflow-auto">
+                <Canvas />
+            </div>
+        </div>
       </div>
       <Toaster />
     </SidebarProvider>
