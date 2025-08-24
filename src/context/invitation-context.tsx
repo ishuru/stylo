@@ -1,6 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
+import html2canvas from 'html2canvas';
 import type { InvitationTemplate, Layer, SavedDesign } from '@/lib/types';
 import { initialTemplates } from '@/lib/templates';
 import { useLocalStorage } from '@/hooks/use-local-storage';
@@ -13,6 +14,7 @@ interface InvitationContextType {
   templates: InvitationTemplate[];
   selectedTemplate: InvitationTemplate | null;
   customizations: Customizations;
+  canvasRef: React.RefObject<HTMLDivElement>;
   setSelectedTemplate: (template: InvitationTemplate | null) => void;
   updateLayer: (layerId: string, updates: Partial<Layer>) => void;
   toggleFavorite: (templateId: string) => void;
@@ -34,6 +36,7 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
   const [templates, setTemplates] = useState<InvitationTemplate[]>([]);
   const [selectedTemplate, setSelectedTemplateState] = useState<InvitationTemplate | null>(null);
   const [customizations, setCustomizations] = useState<Customizations>({});
+  const canvasRef = useRef<HTMLDivElement>(null);
   
   const [drafts, setDrafts] = useLocalStorage<SavedDesign[]>('savedDesigns', []);
   const [activeDraftId, setActiveDraftId] = useState<string | null>(null);
@@ -112,9 +115,17 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const saveDraft = async (name?: string) => {
-    if (!selectedTemplate) return;
+    if (!selectedTemplate || !canvasRef.current) return;
     
     const draftName = name || (activeDraftId ? drafts.find(d => d.id === activeDraftId)?.name : null) || `Draft ${drafts.length + 1}`;
+    
+    const canvas = await html2canvas(canvasRef.current, {
+        allowTaint: true,
+        useCORS: true,
+        backgroundColor: null,
+        scale: 0.2, // Generate a smaller image for the thumbnail
+    });
+    const thumbnail = canvas.toDataURL('image/png').split(',')[1];
     
     const newDraft: SavedDesign = {
       id: activeDraftId || Date.now().toString(),
@@ -122,18 +133,18 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
       templateId: selectedTemplate.id,
       customizations,
       savedAt: new Date().toISOString(),
+      thumbnail,
     };
     
     const newDrafts = drafts.filter(d => d.id !== newDraft.id);
-    setDrafts([...newDrafts, newDraft]);
+    setDrafts([...newDrafts, newDraft].sort((a,b) => new Date(b.savedAt).getTime() - new Date(a.savedAt).getTime()));
     setActiveDraftId(newDraft.id);
-    // In a real app, you would generate a thumbnail here.
   };
 
   const loadDraft = (draftId: string) => {
     const draft = drafts.find(d => d.id === draftId);
     if (draft) {
-      const template = templates.find(t => t.id === draft.templateId);
+      const template = templates.find(t => t.id === draft.templateId) || initialTemplates.find(t => t.id === draft.templateId);
       if (template) {
         setSelectedTemplateState(template);
         setCustomizations(draft.customizations);
@@ -157,6 +168,7 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
         templates,
         selectedTemplate,
         customizations,
+        canvasRef,
         setSelectedTemplate,
         updateLayer,
         toggleFavorite,

@@ -10,9 +10,6 @@ import { BookMarked, Palette, Wand2 } from "lucide-react";
 export function EditorSidebar() {
   return (
     <div className="h-full flex flex-col">
-      <div className="p-4 border-b">
-        <h2 className="text-2xl font-bold font-headline text-primary">Invite Canvas</h2>
-      </div>
       <Tabs defaultValue="templates" className="flex-1 flex flex-col overflow-hidden">
         <TabsList className="m-4">
           <TabsTrigger value="templates" className="w-full">

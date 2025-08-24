@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from 'react';
+import React from 'react';
 import html2canvas from 'html2canvas';
 import { useInvitation } from '@/context/invitation-context';
 import { Card, CardContent } from '@/components/ui/card';
@@ -20,9 +20,8 @@ const templateComponents: { [key: string]: React.FC<{ template: InvitationTempla
 };
 
 export function Canvas() {
-  const { selectedTemplate, customizations } = useInvitation();
+  const { selectedTemplate, customizations, canvasRef } = useInvitation();
   const { toast } = useToast();
-  const canvasRef = useRef<HTMLDivElement>(null);
 
   const handleExport = async () => {
     if (!canvasRef.current) {
