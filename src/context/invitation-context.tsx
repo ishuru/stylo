@@ -49,15 +49,13 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const loadedTemplates = templates.map(t => ({
-      ...t,
-      favorite: favoriteTemplates.includes(t.id),
-    }));
-    // This comparison prevents an infinite loop
-    if (JSON.stringify(templates) !== JSON.stringify(loadedTemplates)) {
-        setTemplates(loadedTemplates);
-    }
-  }, [favoriteTemplates, templates, setTemplates]);
+    setTemplates(prevTemplates =>
+      prevTemplates.map(t => ({
+        ...t,
+        favorite: favoriteTemplates.includes(t.id),
+      }))
+    );
+  }, [favoriteTemplates, setTemplates]);
   
   const fetchDrafts = useCallback(async () => {
     try {
@@ -123,11 +121,6 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
         const newFavorites = prev.includes(templateId)
             ? prev.filter(id => id !== templateId)
             : [...prev, templateId];
-        
-        setTemplates(currentTemplates => currentTemplates.map(t => ({
-            ...t,
-            favorite: newFavorites.includes(t.id)
-        })));
         
         return newFavorites;
     });
