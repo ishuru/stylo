@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from 'react';
+import html2canvas from 'html2canvas';
 import { useInvitation } from '@/context/invitation-context';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -22,10 +23,38 @@ export function Canvas() {
   const canvasRef = useRef<HTMLDivElement>(null);
 
   const handleExport = async () => {
-    toast({
-      title: 'Coming Soon!',
-      description: 'Export functionality will be available soon.',
-    });
+    if (!canvasRef.current) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Could not find canvas to export.',
+      });
+      return;
+    }
+
+    try {
+      const canvas = await html2canvas(canvasRef.current, {
+        allowTaint: true,
+        useCORS: true,
+        backgroundColor: null,
+      });
+      const dataUrl = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `${selectedTemplate?.name?.toLowerCase().replace(/ /g, '-') || 'invitation'}.png`;
+      link.click();
+      toast({
+        title: 'Success!',
+        description: 'Your invitation has been downloaded.',
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Could not export invitation. Please try again.',
+      });
+    }
   };
   
   const getAppliedLayers = () => {
@@ -46,34 +75,37 @@ export function Canvas() {
   return (
     <div className="flex flex-col h-full bg-muted/40 p-4 lg:p-8 items-center">
       <div className="w-full flex justify-end mb-4">
-        <Button onClick={handleExport}>
+        <Button onClick={handleExport} disabled={!selectedTemplate}>
           <Download className="mr-2" />
           Export
         </Button>
       </div>
       <div className="flex-grow flex items-center justify-center w-full">
-        <Card
+        <div
           ref={canvasRef}
-          className="overflow-hidden shadow-2xl"
           style={{
             width: selectedTemplate?.width,
             height: selectedTemplate?.height,
           }}
         >
-          <CardContent className="p-0 h-full w-full">
-            {customizedTemplate && SelectedComponent ? (
-              <SelectedComponent template={customizedTemplate} />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-background">
-                <div className='flex flex-col gap-2 p-4'>
-                    <Skeleton className="h-10 w-64" />
-                    <Skeleton className="h-4 w-48" />
-                    <Skeleton className="h-4 w-52" />
+          <Card
+            className="overflow-hidden shadow-2xl h-full w-full"
+          >
+            <CardContent className="p-0 h-full w-full">
+              {customizedTemplate && SelectedComponent ? (
+                <SelectedComponent template={customizedTemplate} />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-background">
+                  <div className='flex flex-col gap-2 p-4'>
+                      <Skeleton className="h-10 w-64" />
+                      <Skeleton className="h-4 w-48" />
+                      <Skeleton className="h-4 w-52" />
+                  </div>
                 </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
