@@ -3,7 +3,7 @@ import type { InvitationTemplate } from './types';
 export const initialTemplates: InvitationTemplate[] = [
   {
     id: 'template-wedding-classic',
-    name: 'Classic Wedding Invitation',
+    name: 'Wedding Invitation',
     component: 'ClassicWeddingInvitation',
     width: 500,
     height: 700,
@@ -21,7 +21,7 @@ export const initialTemplates: InvitationTemplate[] = [
   },
   {
     id: 'template-birthday-modern',
-    name: 'Modern Birthday Invitation',
+    name: 'Birthday Invitation',
     component: 'ModernBirthdayInvitation',
     width: 500,
     height: 700,
@@ -40,7 +40,7 @@ export const initialTemplates: InvitationTemplate[] = [
   },
   {
     id: 'template-baby-shower-playful',
-    name: 'Playful Baby Shower',
+    name: 'Baby Shower Invitation',
     component: 'PlayfulBabyShower',
     width: 500,
     height: 700,
