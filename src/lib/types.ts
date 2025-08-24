@@ -33,5 +33,5 @@ export interface SavedDesign {
   template: InvitationTemplate;
   customizations: { [layerId: string]: Partial<Layer> };
   savedAt: string;
-  thumbnail?: string;
+  thumbnail: string;
 }

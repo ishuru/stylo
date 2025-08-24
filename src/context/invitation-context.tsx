@@ -121,7 +121,7 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
         backgroundColor: null,
         scale: 0.2, // Generate a smaller image for the thumbnail
     });
-    const thumbnail = canvas.toDataURL('image/png').split(',')[1];
+    const thumbnail = canvas.toDataURL('image/png');
     
     const newDraft: SavedDesign = {
       id: activeDraftId || Date.now().toString(),

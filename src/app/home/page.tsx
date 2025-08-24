@@ -153,7 +153,7 @@ const DraftsManager: React.FC<{
                     <div key={draft.id} className="border rounded-lg p-3 flex flex-col sm:flex-row items-center gap-4 bg-card">
                         <div className="flex-shrink-0 w-24 h-36 sm:w-16 sm:h-24 bg-muted/50 rounded-md overflow-hidden">
                             {draft.thumbnail ? (
-                                 <img src={`data:image/png;base64,${draft.thumbnail}`} alt={draft.name || 'Draft preview'} className="w-full h-full object-cover" />
+                                 <img src={draft.thumbnail} alt={draft.name || 'Draft preview'} className="w-full h-full object-cover" />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center">
                                      <Search className="h-8 w-8 text-muted-foreground" />
