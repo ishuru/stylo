@@ -1,7 +1,8 @@
+
 "use client";
 
 import { Toaster } from "@/components/ui/toaster";
-import { Sidebar, SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { Sidebar, SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { EditorSidebar } from "@/components/editor-sidebar";
 import { Canvas } from "@/components/canvas";
 import { Suspense } from "react";
@@ -9,10 +10,12 @@ import { Button } from "@/components/ui/button";
 import { Save } from "lucide-react";
 import { useInvitation } from "@/context/invitation-context";
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 function EditorHeader() {
   const { saveDraft } = useInvitation();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const handleSave = async () => {
     try {
@@ -32,10 +35,13 @@ function EditorHeader() {
 
   return (
     <div className="p-4 border-b bg-card flex justify-between items-center">
-        <h2 className="text-2xl font-bold font-headline text-primary">Invite Canvas</h2>
-        <Button onClick={handleSave}>
-            <Save className="mr-2"/>
-            Save Draft
+        <div className="flex items-center gap-4">
+            <SidebarTrigger className="md:hidden"/>
+            <h2 className="text-2xl font-bold font-headline text-primary hidden md:block">Invite Canvas</h2>
+        </div>
+        <Button onClick={handleSave} size={isMobile ? 'icon' : 'default'}>
+            <Save />
+            <span className="hidden md:inline">Save Draft</span>
         </Button>
     </div>
   )
@@ -50,7 +56,7 @@ function Editor() {
         </Sidebar>
         <SidebarInset className="flex-1 flex flex-col">
           <EditorHeader />
-          <div className="flex-1">
+          <div className="flex-1 overflow-auto">
             <Canvas />
           </div>
         </SidebarInset>

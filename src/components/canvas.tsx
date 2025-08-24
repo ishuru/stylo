@@ -1,6 +1,7 @@
+
 "use client";
 
-import React from 'react';
+import React, { useRef, useEffect, useState, useLayoutEffect } from 'react';
 import html2canvas from 'html2canvas';
 import { useInvitation } from '@/context/invitation-context';
 import { Card, CardContent } from '@/components/ui/card';
@@ -11,7 +12,7 @@ import ClassicWeddingInvitation from './templates/classic-wedding-invitation';
 import ModernBirthdayInvitation from './templates/modern-birthday-invitation';
 import PlayfulBabyShower from './templates/playful-baby-shower';
 import type { InvitationTemplate } from '@/lib/types';
-import { Skeleton } from './ui/skeleton';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const templateComponents: { [key: string]: React.FC<{ template: InvitationTemplate }> } = {
   ClassicWeddingInvitation: ClassicWeddingInvitation,
@@ -22,6 +23,35 @@ const templateComponents: { [key: string]: React.FC<{ template: InvitationTempla
 export function Canvas() {
   const { selectedTemplate, customizations, canvasRef } = useInvitation();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
+  const outerCanvasRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useLayoutEffect(() => {
+    const calculateScale = () => {
+        if (!outerCanvasRef.current || !selectedTemplate) {
+            return;
+        }
+
+        const containerWidth = outerCanvasRef.current.offsetWidth;
+        const templateWidth = selectedTemplate.width;
+        
+        const padding = isMobile ? 32 : 64; // 2rem for mobile, 4rem for desktop
+
+        if (containerWidth < templateWidth + padding) {
+            setScale((containerWidth - padding) / templateWidth);
+        } else {
+            setScale(1);
+        }
+    };
+    
+    calculateScale();
+    
+    const handleResize = () => calculateScale();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+
+  }, [selectedTemplate, isMobile]);
 
   const handleExport = async () => {
     if (!canvasRef.current) {
@@ -38,6 +68,7 @@ export function Canvas() {
         allowTaint: true,
         useCORS: true,
         backgroundColor: null,
+        scale: 1, // Render at full resolution
       });
       const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
@@ -74,8 +105,13 @@ export function Canvas() {
   const SelectedComponent = customizedTemplate ? templateComponents[customizedTemplate.component] : null;
 
   return (
-    <div className="flex flex-col h-full bg-muted/40 p-4 lg:p-8 items-center">
-      <div className="w-full flex justify-end mb-4">
+    <div ref={outerCanvasRef} className="flex flex-col h-full bg-muted/40 p-4 lg:p-8 items-center w-full">
+       <div 
+        className="w-full flex justify-end mb-4" 
+        style={{ 
+          maxWidth: selectedTemplate ? selectedTemplate.width * scale : '100%',
+        }}
+      >
         <Button onClick={handleExport} disabled={!selectedTemplate}>
           <Download className="mr-2" />
           Export
@@ -87,6 +123,9 @@ export function Canvas() {
           style={{
             width: selectedTemplate?.width,
             height: selectedTemplate?.height,
+            transform: `scale(${scale})`,
+            transformOrigin: 'center',
+            transition: 'transform 0.2s ease-in-out'
           }}
         >
           <Card
@@ -97,10 +136,9 @@ export function Canvas() {
                 <SelectedComponent template={customizedTemplate} />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-background">
-                  <div className='flex flex-col gap-2 p-4'>
-                      <Skeleton className="h-10 w-64" />
-                      <Skeleton className="h-4 w-48" />
-                      <Skeleton className="h-4 w-52" />
+                  <div className='flex flex-col gap-2 p-4 text-center'>
+                      <h3 className="text-xl font-semibold text-muted-foreground">Select a template to get started</h3>
+                      <p className='text-sm text-muted-foreground'>or describe your event to generate one with AI!</p>
                   </div>
                 </div>
               )}

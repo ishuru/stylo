@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useInvitation } from '@/context/invitation-context';
 import type { SavedDesign, InvitationTemplate } from '@/lib/types';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 type ActiveTab = 'start' | 'templates' | 'drafts';
 
@@ -89,10 +90,10 @@ const TemplateGallery: React.FC<{
     <div>
         <h3 className="text-2xl font-headline text-secondary-foreground mb-2 text-center">Browse Templates</h3>
         <p className="text-muted-foreground mb-6 text-center">Get started quickly with one of our pre-designed templates.</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {templates.map(template => (
                 <div key={template.id} className="border rounded-lg flex flex-col bg-card overflow-hidden shadow-sm transition-shadow hover:shadow-lg">
-                    <div className="aspect-[3/4] bg-muted/50">
+                    <div className="aspect-[5/7] bg-muted/50">
                          <img src={`https://placehold.co/${template.width}x${template.height}.png?text=${encodeURIComponent(template.name)}`} alt={template.name} className="w-full h-full object-cover"/>
                     </div>
                     <div className="p-4 flex flex-col flex-grow">
@@ -125,11 +126,11 @@ const DraftsManager: React.FC<{
             <div className="space-y-4">
                 {drafts.map(draft => (
                     <div key={draft.id} className="border rounded-lg p-3 flex items-center gap-4 bg-card">
-                        <div className="flex-shrink-0 w-16 h-16 bg-muted/50 rounded-md overflow-hidden">
+                        <div className="flex-shrink-0 w-16 h-24 bg-muted/50 rounded-md overflow-hidden">
                             {draft.thumbnail ? (
                                  <img src={`data:image/png;base64,${draft.thumbnail}`} alt={draft.name || 'Draft preview'} className="w-full h-full object-cover" />
                             ) : (
-                                <div className="w-full h-full flex items-center justify-center aspect-[3/4]">
+                                <div className="w-full h-full flex items-center justify-center">
                                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
@@ -210,6 +211,7 @@ export default function HomePage() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+    const isMobile = useIsMobile();
 
     const handleStartDesigning = async (description: string) => {
         setIsLoading(true);
@@ -236,17 +238,17 @@ export default function HomePage() {
     };
     
     return (
-        <main className="container mx-auto p-4 sm:p-6 lg:p-8" style={{ minHeight: 'calc(100vh - 110px)' }}>
-            <div className="max-w-4xl w-full mx-auto bg-card p-8 rounded-xl shadow-lg">
-                <div className="flex justify-center items-center gap-4 mb-8 border-b border-border pb-4">
+        <main className="container mx-auto p-4" style={{ minHeight: 'calc(100vh - 110px)' }}>
+            <div className="max-w-4xl w-full mx-auto bg-card p-4 sm:p-8 rounded-xl shadow-lg">
+                <div className={`flex items-center gap-2 sm:gap-4 mb-8 border-b border-border pb-4 ${isMobile ? 'justify-around' : 'justify-center'}`}>
                     <TabButton active={activeTab === 'start'} onClick={() => setActiveTab('start')}>
-                        Start from Scratch
+                        Start
                     </TabButton>
                     <TabButton active={activeTab === 'templates'} onClick={() => setActiveTab('templates')}>
                         Templates
                     </TabButton>
                     <TabButton active={activeTab === 'drafts'} onClick={() => setActiveTab('drafts')}>
-                        My Drafts ({drafts.length})
+                        Drafts ({drafts.length})
                     </TabButton>
                 </div>
 
