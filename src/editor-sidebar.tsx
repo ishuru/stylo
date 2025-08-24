@@ -26,7 +26,7 @@ export function EditorSidebar() {
           <TabsTrigger value="ai-tools" className="w-full">
             <Wand2 className="mr-2 h-4 w-4" />
             AI Tools
-          </Tabs-Trigger>
+          </TabsTrigger>
         </TabsList>
         <ScrollArea className="flex-1">
           <TabsContent value="templates">
