@@ -6,6 +6,7 @@ import html2canvas from 'html2canvas';
 import type { InvitationTemplate, Layer, SavedDesign } from '@/lib/types';
 import { initialTemplates } from '@/lib/templates';
 import { useLocalStorage } from '@/hooks/use-local-storage';
+import { generateInvitationTemplate } from '@/ai/flows/generate-invitation-template';
 
 interface Customizations {
   [layerId: string]: Partial<Layer>;
@@ -66,19 +67,8 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
   };
   
   const startDesigning = async (description: string) => {
-    // In a real app, you might use an AI to pick a template based on the description
-    const blankTemplate: InvitationTemplate = {
-      id: 'custom-template',
-      name: 'Custom Design',
-      component: 'ClassicWeddingInvitation',
-      width: 500,
-      height: 700,
-      layers: [
-        { id: 'bg', type: 'image', name: 'Background', value: 'https://placehold.co/500x700', x: 0, y: 0, width: 500, height: 700, editable: true, aiPrompt: description },
-        { id: 'text-1', type: 'text', name: 'Main Text', value: 'Your Text Here', x: 250, y: 350, width: 400, height: 100, fontFamily: 'font-headline', fontSize: 40, color: '#000000', textAlign: 'center', editable: true },
-      ],
-    };
-    setSelectedTemplateState(blankTemplate);
+    const aiGeneratedTemplate = await generateInvitationTemplate({ description });
+    setSelectedTemplateState(aiGeneratedTemplate);
     setCustomizations({});
     setActiveDraftId(null);
   };
