@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
@@ -57,6 +58,8 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
   };
   
   const setSelectedTemplate = (template: InvitationTemplate | null) => {
+    if (template?.id === selectedTemplate?.id) return;
+    
     setSelectedTemplateState(template);
     setCustomizations({});
     setActiveDraftId(null);
@@ -144,6 +147,7 @@ export const InvitationProvider = ({ children }: { children: ReactNode }) => {
   const loadDraft = (draftId: string) => {
     const draft = drafts.find(d => d.id === draftId);
     if (draft) {
+      // Find both from templates and initialTemplates in case templates haven't loaded yet
       const template = templates.find(t => t.id === draft.templateId) || initialTemplates.find(t => t.id === draft.templateId);
       if (template) {
         setSelectedTemplateState(template);

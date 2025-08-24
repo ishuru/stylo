@@ -91,7 +91,7 @@ const TemplateGallery: React.FC<{
         <p className="text-muted-foreground mb-6 text-center">Get started quickly with one of our pre-designed templates.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {templates.map(template => (
-                <div key={template.name} className="border rounded-lg flex flex-col bg-card overflow-hidden shadow-sm transition-shadow hover:shadow-lg">
+                <div key={template.id} className="border rounded-lg flex flex-col bg-card overflow-hidden shadow-sm transition-shadow hover:shadow-lg">
                     <div className="aspect-[3/4] bg-muted/50">
                          <img src={`https://placehold.co/${template.width}x${template.height}.png?text=${encodeURIComponent(template.name)}`} alt={template.name} className="w-full h-full object-cover"/>
                     </div>
@@ -125,11 +125,11 @@ const DraftsManager: React.FC<{
             <div className="space-y-4">
                 {drafts.map(draft => (
                     <div key={draft.id} className="border rounded-lg p-3 flex items-center gap-4 bg-card">
-                        <div className="flex-shrink-0 w-16 h-16 bg-muted/50 rounded-md overflow-hidden aspect-[3/4]">
+                        <div className="flex-shrink-0 w-16 h-16 bg-muted/50 rounded-md overflow-hidden">
                             {draft.thumbnail ? (
                                  <img src={`data:image/png;base64,${draft.thumbnail}`} alt={draft.name || 'Draft preview'} className="w-full h-full object-cover" />
                             ) : (
-                                <div className="w-full h-full flex items-center justify-center">
+                                <div className="w-full h-full flex items-center justify-center aspect-[3/4]">
                                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
@@ -271,5 +271,3 @@ export default function HomePage() {
         </main>
     );
 };
-
-    
